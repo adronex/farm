@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="farmApp">
+<head>
+    <meta charset="UTF-8">
+    <title>FarmPrototype</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/item.js"></script>
+    <script src="js/staticData.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/bag.js"></script>
+    <script src="js/farm.js"></script>
+    <script>
+        angular.module('farmApp', [])
+            .controller('GameController', function ($http, $scope, $timeout) {
+                var game = this;
+                var updateScreenDelta = 50;
+                var commandsToSynchronize = 10;
+                var commandsBuffer = [];
+                game.commands = ["GET", "BUY", "SELL", "APPLY"];
+                game.focus = undefined;
+                game.hand = {};
+                game.target = {};
+                game.farm = [[]];
+
+                game.execute = function (command) {
+                    var request = {};
+                    request.command = command;
+                    request.hand = game.hand;
+                    request.target = game.target;
+                    commandsBuffer.push(request);
+                    clientSideExecute([request]);
+                    if (request.command === "GET") {
+                        synchronize();
+                    } else if (commandsBuffer.length > 0 && commandsBuffer.length >= commandsToSynchronize) {
+                        synchronize();
+                    }
+                };
+
+                function clientSideExecute(request) {
+                    commandHandler(JSON.stringify(request));
+                    refreshViewData();
+                }
+
+                function refreshViewData() {
+                    var actualData = JSON.parse(getDataAsString());
+                    game.bag = actualData.bag;
+                    game.shop = actualData.shop;
+                    game.farm = actualData.farm;
+                    if (game.target.x !== undefined && game.target.y !== undefined) {
+                        game.target.cell = game.farm[game.target.x][game.target.y]
+                    }
+                    refreshItemInfo();
+                    runTimers();
+                }
+
+                function refreshItemInfo() {
+                    game.items = utils.mapArray(Object.values(staticData.getItems()), function (it) {
+                        return game.getItemInfo(it);
+                    });
+                }
+
+                function runTimers() {
+                    var now = new Date().getTime();
+                    for (var x = 0; x < game.farm.length; x++) {
+                        for (var y = 0; y < game.farm[x].length; y++) {
+                            if (!game.farm[x][y]) {
+                                continue;
+                            }
+                            if (game.farm[x][y].currentProductionTimeLeft > 0) {
+                                var timeLeft = game.farm[x][y].endTime - now;
+                                game.farm[x][y].currentProductionTimeLeft = timeLeft > 0 ? timeLeft : 0;
+                            }
+                        }
+                    }
+                    $timeout(runTimers, updateScreenDelta);
+                }
+
+                function synchronize() {
+                    $http.post("http://localhost:4567/game/execute", commandsBuffer)
+                        .then(function (response) {
+                            setStateFromString(JSON.stringify(response.data));
+                            refreshViewData();
+                            commandsBuffer = [];
+                        }, function (error) {
+                            if (error.status !== -1) {
+                                alert(error.data);
+                                commandsBuffer = [];
+                            } else {
+                                console.warn("Server is not available, offline mode enabled.");
+                            }
+                        });
+                }
+
+                game.getItemInfo = function (item) {
+                    if (!game.bag || !game.shop) {
+                        return;
+                    }
+
+                    var bagItem = utils.findInArray(game.bag, function (it) {
+                        return it.item.id === item.id;
+                    });
+                    var shopItem = utils.findInArray(game.shop, function (it) {
+                        return it.item.id === item.id;
+                    });
+                    if (!bagItem) bagItem = {};
+                    if (!shopItem) {
+                        shopItem = {};
+                        item.purchasable = false;
+                    } else {
+                        item.purchasable = true;
+                    }
+
+                    item.count = bagItem.count;
+                    item.buyPrice = shopItem.buyPrice;
+                    item.sellPrice = shopItem.sellPrice;
+                    return item;
+                };
+
+                game.getItemStyle = function (item) {
+                    var style = 'bag item ';
+                    if (game.hand.id === item.id) {
+                        style += ' chosen';
+                    }
+                    if (!item.purchasable && item.count === undefined) {
+                        return style + ' invalid';
+                    }
+                    if (!item.purchasable && item.count !== undefined) {
+                        return style + ' unpurchasable';
+                    }
+                    var softMoney = utils.findInArray(game.bag, function (it) {
+                        return it.item.id === staticData.getItems().softMoney.id;
+                    });
+                    if (item.count > 0) {
+                        return style + ' available';
+                    }
+                    var notInInventory = item.count <= 0 || item.count === undefined;
+                    if (item.buyPrice <= softMoney.count && notInInventory) {
+                        return style + ' purchasable'
+                    }
+                    if (item.buyPrice > softMoney.count && notInInventory) {
+                        return style + ' unavailable'
+                    }
+                };
+
+                game.onItemClick = function (item) {
+                    game.hand = item;
+                };
+
+                game.getFarmCellStyle = function (x, y) {
+                    var style = 'farm cell';
+                    if (game.target.x === x && game.target.y === y) {
+                        style += ' chosen';
+                    }
+                    var cell = game.farm[x][y];
+                    if (!cell || !cell.queue) {
+                        return style + ' empty';
+                    }
+                    if (cell.queue.length === 0) {
+                        return style + ' waiting';
+                    }
+                    if (cell.endTime > new Date().getTime()) {
+                        return style + ' producing';
+                    }
+                    return style + ' ready';
+                };
+
+                game.onFarmCellClick = function (x, y, cell) {
+                    game.target = {
+                        x: x,
+                        y: y,
+                        cell: cell
+                    };
+                };
+            });
+    </script>
+    <style>
+        .bag {
+            overflow: auto;
+            width: 100%;
+        }
+
+        .bag.item {
+            height: 100px;
+            width: 100px;
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            float: left;
+        }
+
+        .bag.item.invalid {
+            background-color: #c6c4c4;
+        }
+
+        .bag.item.unpurchasable {
+            background-color: #f5b873;
+        }
+
+        .bag.item.purchasable {
+            background-color: #ded9ff;
+        }
+
+        .bag.item.unavailable {
+            background-color: #ff9599;
+        }
+
+        .bag.item.available {
+            background-color: #afffcc;
+        }
+
+        .farm.row {
+            overflow: auto;
+        }
+
+        .farm.cell {
+            height: 100px;
+            width: 100px;
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            float: left;
+        }
+
+        .farm.cell.empty {
+            background-color: #c6c4c4;
+        }
+
+        .farm.cell.waiting {
+            background-color: #ded9ff;
+        }
+
+        .farm.cell.producing {
+            background-color: #ff9599;
+        }
+
+        .farm.cell.ready {
+            background-color: #afffcc;
+        }
+
+        .chosen {
+            box-shadow: 0 0 20px 60px rgba(0, 0, 0, 0.3) inset;
+        }
+    </style>
+</head>
+<body>
+<div ng-controller="GameController as game"
+     class="game">
+
+    <div ng-show="game.items"
+         class="bag">Items:
+        <div>
+            <div ng-repeat="item in game.items track by $index"
+                 ng-class="game.getItemStyle(item)"
+                 ng-click="game.onItemClick(item)">
+                <div>{{item.id}}</div>
+                <div ng-show="item.purchasable">
+                    <div>buy/sell:</div>
+                    <div>{{item.buyPrice}} / {{item.sellPrice}}</div>
+                </div>
+                <div ng-show="item.count !== undefined">count: {{item.count}}</div>
+            </div>
+        </div>
+    </div>
+
+    <button ng-repeat="command in game.commands"
+            ng-click="game.execute(command)">{{command}}
+    </button>
+
+    <div ng-show="game.hand.id">
+        <div>Hand: {{game.hand}}</div>
+    </div>
+    <div ng-show="game.target.x !== undefined">
+        <div>Target: {{game.target}}</div>
+    </div>
+
+    <div ng-show="game.farm[0].length > 0">
+        Farm:
+        <div ng-repeat="row in game.farm track by $index"
+             class="farm row">
+            <div ng-repeat="cell in row track by $index"
+                 ng-class="game.getFarmCellStyle($parent.$index, $index)"
+                 ng-click="game.onFarmCellClick($parent.$index, $index, cell)">
+                <div ng-show="cell">{{cell.id}}</div>
+                <div ng-show="cell">cd:
+                    {{cell.currentProductionTimeLeft / 1000}}
+                </div>
+                <div ng-repeat="product in cell.queue">queue: {{product.type}} {{product.id}}</div>
+            </div>
+            <br/>
+        </div>
+    </div>
+</div>
+</body>
+</html>
