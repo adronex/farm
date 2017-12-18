@@ -8,11 +8,12 @@ public class Game : MonoBehaviour
 {
     public GameObject Cell;
     
-    private readonly ScriptHolder _scriptHolder = new ScriptHolder();
+    private ScriptHolder _scriptHolder;
 
     // Use this for initialization
     void Start()
     {
+        _scriptHolder = new ScriptHolder();
         string initialData = _scriptHolder.GetData();
         var parsed = JSON.Parse(initialData);
         JSONArray bag = parsed["bag"].AsArray;
