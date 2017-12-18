@@ -4,15 +4,17 @@ using Jurassic;
 public class ScriptHolder
 {
     private readonly ScriptEngine _engine = new ScriptEngine();
+    private static readonly string Path = "Assets/Resources/";
+    private static readonly string Extension = ".jslib";
 
     public ScriptHolder()
     {
-        _engine.Evaluate(ReadScript("Resources/api.js"));
-        _engine.Evaluate(ReadScript("Resources/item.js"));
-        _engine.Evaluate(ReadScript("Resources/staticData.js"));
-        _engine.Evaluate(ReadScript("Resources/shop.js"));
-        _engine.Evaluate(ReadScript("Resources/bag.js"));
-        _engine.Evaluate(ReadScript("Resources/farm.js"));
+        _engine.Evaluate(ReadScript(Path + "api" + Extension));
+        _engine.Evaluate(ReadScript(Path + "item" + Extension));
+        _engine.Evaluate(ReadScript(Path + "staticData" + Extension));
+        _engine.Evaluate(ReadScript(Path + "shop" + Extension));
+        _engine.Evaluate(ReadScript(Path + "bag" + Extension));
+        _engine.Evaluate(ReadScript(Path + "farm" + Extension));
     }
 
     public string GetData()
