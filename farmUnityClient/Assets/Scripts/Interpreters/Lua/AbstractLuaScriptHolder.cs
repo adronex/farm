@@ -3,13 +3,13 @@ using UnityEngine;
 
 public abstract class AbstractLuaScriptHolder
 {
-    protected List<string> scripts = new List<string>();
+    protected readonly List<string> _scripts = new List<string>();
     
     protected AbstractLuaScriptHolder()
     {
-        scripts.Add(ReadScript("lua/libs/json"));
-        scripts.Add(ReadScript("lua/api"));
-        foreach (string script in scripts)
+        _scripts.Add(ReadScript("lua/libs/json"));
+        _scripts.Add(ReadScript("lua/api"));
+        foreach (var script in _scripts)
         {
             Eval(script);
         }

@@ -1,14 +1,12 @@
-﻿using MoonSharp.Interpreter;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
+using UnityEngine;
 
-public class MoonSharpScriptHolder: AbstractLuaScriptHolder, IScriptHolder
+public class MoonSharpScriptHolder : AbstractLuaScriptHolder, IScriptHolder
 {
     private Script _script = new Script();
-
-    public MoonSharpScriptHolder()
-    {
-        _script.Options.ScriptLoader = new EmbeddedResourcesScriptLoader();
-    }
 
     public override void Eval(string script)
     {

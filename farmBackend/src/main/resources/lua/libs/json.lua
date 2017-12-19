@@ -7,7 +7,7 @@
 -- under the terms of the MIT license. See LICENSE for details.
 --
 
-local json = { _version = "0.1.0" }
+json = { _version = "0.1.0" }
 
 -------------------------------------------------------------------------------
 -- Encode
@@ -375,6 +375,3 @@ function json.decode(str)
     end
     return ( parse(str, next_char(str, 1, space_chars, true)) )
 end
-
-
-return json

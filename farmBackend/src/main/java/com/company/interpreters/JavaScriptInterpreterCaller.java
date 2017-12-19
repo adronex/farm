@@ -1,4 +1,4 @@
-package com.company;
+package com.company.interpreters;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -6,11 +6,11 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.InputStreamReader;
 
-public class ScriptCaller {
+public class JavaScriptInterpreterCaller implements InterpreterCaller {
 
 	private final Invocable invocable;
 
-	public ScriptCaller() throws ScriptException {
+	public JavaScriptInterpreterCaller() throws ScriptException {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("js");
 		engine.eval(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("js/api.js")));
@@ -22,6 +22,7 @@ public class ScriptCaller {
 		this.invocable = (Invocable) engine;
 	}
 
+	@Override
 	public void setState(String savedState) throws ScriptException, NoSuchMethodException {
 		if (savedState != null) {
 			invocable.invokeFunction("setStateFromString", savedState);
@@ -30,13 +31,8 @@ public class ScriptCaller {
 		}
 	}
 
+	@Override
 	public String executeCommand(String requestBody) throws ScriptException, NoSuchMethodException {
 		return (String)invocable.invokeFunction("commandHandler", requestBody);
 	}
-
-//	public void callLua() {
-//		Globals globals = JsePlatform.standardGlobals();
-//		LuaValue chunk = globals.loadfile("lua/api.lua");
-//		chunk.call();
-//	}
 }

@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.interpreters.InterpreterCaller;
+import com.company.interpreters.JavaScriptInterpreterCaller;
+import com.company.interpreters.LuaInterpreterCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -11,7 +14,7 @@ import java.util.Map;
 
 public class RequestHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
-	private ScriptCaller scriptCaller = new ScriptCaller();
+	private InterpreterCaller interpreterCaller = new LuaInterpreterCaller();
 	private Map<String, String> usersSessions = new HashMap<>();
 
 	public RequestHandler() throws ScriptException {
@@ -19,8 +22,8 @@ public class RequestHandler {
 
 	public synchronized String handleRequest(Request request, Response response) {
 		try {
-			scriptCaller.setState(usersSessions.get(request.ip()));
-			String gameState = scriptCaller.executeCommand(request.body());
+			interpreterCaller.setState(usersSessions.get(request.ip()));
+			String gameState = interpreterCaller.executeCommand(request.body());
 			usersSessions.put(request.ip(), gameState);
 			response.body(gameState);
 			return gameState;
