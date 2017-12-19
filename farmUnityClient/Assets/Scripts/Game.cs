@@ -10,7 +10,7 @@ public class Game : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _scriptHolder = new JurassicScriptHolder();
+        _scriptHolder = new NilJsScriptHolder();
         _scriptHolder.GetData();
         string initialData = _scriptHolder.GetData();
         var parsed = JSON.Parse(initialData);

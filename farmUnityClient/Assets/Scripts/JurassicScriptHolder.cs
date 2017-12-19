@@ -1,5 +1,4 @@
 ﻿using Jurassic;
-using UnityEngine;
 
 public class JurassicScriptHolder : AbstractJsScriptHolder, IScriptHolder
 {
