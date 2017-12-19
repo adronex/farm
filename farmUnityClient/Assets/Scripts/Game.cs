@@ -5,12 +5,12 @@ public class Game : MonoBehaviour
 {
     public GameObject Cell;
     
-    private ScriptHolder _scriptHolder;
+    private IScriptHolder _scriptHolder;
 
     // Use this for initialization
     void Start()
     {
-        _scriptHolder = new ScriptHolder();
+        _scriptHolder = new JurassicScriptHolder();
         _scriptHolder.GetData();
         string initialData = _scriptHolder.GetData();
         var parsed = JSON.Parse(initialData);
