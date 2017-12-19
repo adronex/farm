@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractJsScriptHolder
+public abstract class AbstractLuaScriptHolder
 {
     protected List<string> scripts = new List<string>();
     
-    protected AbstractJsScriptHolder()
+    protected AbstractLuaScriptHolder()
     {
-        scripts.Add(ReadScript("api"));
-        scripts.Add(ReadScript("item"));
-        scripts.Add(ReadScript("staticData"));
-        scripts.Add(ReadScript("shop"));
-        scripts.Add(ReadScript("bag"));
-        scripts.Add(ReadScript("farm"));
+        scripts.Add(ReadScript("lua/libs/json"));
+        scripts.Add(ReadScript("lua/api"));
         foreach (string script in scripts)
         {
             Eval(script);

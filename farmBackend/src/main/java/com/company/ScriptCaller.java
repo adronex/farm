@@ -36,7 +36,7 @@ public class ScriptCaller {
 
 //	public void callLua() {
 //		Globals globals = JsePlatform.standardGlobals();
-//		LuaValue chunk = globals.loadfile("lua/hello.lua");
+//		LuaValue chunk = globals.loadfile("lua/api.lua");
 //		chunk.call();
 //	}
 }
