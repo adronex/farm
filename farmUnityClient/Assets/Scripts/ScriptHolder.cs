@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Jurassic;
+﻿using Jurassic;
 using UnityEngine;
 
 public class ScriptHolder
@@ -24,6 +23,6 @@ public class ScriptHolder
     private string ReadScript(string path)
     {
         var asset = Resources.Load(path) as TextAsset;
-        return asset?.text;
+        return asset.text;
     }
 }
