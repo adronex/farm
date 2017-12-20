@@ -83,3 +83,5 @@ function Utils()
 end
 
 utils = Utils()
+
+setState("{}")

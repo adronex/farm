@@ -1,34 +1,36 @@
 package com.company.interpreters;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.io.InputStreamReader;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class LuaInterpreterCaller implements InterpreterCaller {
 
-	private final Invocable invocable;
+	private final LuaValue functionContext;
 
-	public LuaInterpreterCaller() throws ScriptException {
-		ScriptEngineManager manager = new ScriptEngineManager();
-		ScriptEngine engine = manager.getEngineByName("luaj");
-		engine.eval(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("lua/libs/json.lua")));
-		engine.eval(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("lua/api.lua")));
-		this.invocable = (Invocable) engine;
+	public LuaInterpreterCaller() {
+		Globals globals = JsePlatform.standardGlobals();
+		LuaValue[] scripts = {
+				LuaValue.valueOf("lua/libs/json.lua"),
+				LuaValue.valueOf("lua/api.lua"),
+				LuaValue.valueOf("lua/item.lua"),
+				LuaValue.valueOf("lua/shop.lua"),
+				LuaValue.valueOf("lua/bag.lua"),
+				LuaValue.valueOf("lua/farm.lua")
+		};
+		functionContext = globals.get("dofile").invoke(scripts).arg1();
 	}
 
 	@Override
-	public void setState(String savedState) throws ScriptException, NoSuchMethodException {
-		if (savedState != null) {
-			invocable.invokeFunction("setStateFromString", savedState);
-		} else {
-			invocable.invokeFunction("setStateFromString", "{}");
+	public void setState(String savedState) {
+		if (savedState == null) {
+			savedState = "{}";
 		}
+		functionContext.call(LuaValue.valueOf(savedState));
 	}
 
 	@Override
-	public String executeCommand(String requestBody) throws ScriptException, NoSuchMethodException {
-		return (String)invocable.invokeFunction("commandHandler", requestBody);
+	public String executeCommand(String requestBody) {
+		return functionContext.call(LuaValue.valueOf(requestBody)).tojstring();
 	}
 }

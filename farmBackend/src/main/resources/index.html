@@ -15,7 +15,7 @@
             .controller('GameController', function ($http, $scope, $timeout) {
                 var game = this;
                 var updateScreenDelta = 50;
-                var commandsToSynchronize = 10;
+                var commandsToSynchronize = 1;
                 var commandsBuffer = [];
                 game.commands = ["GET", "BUY", "SELL", "APPLY"];
                 game.focus = undefined;
