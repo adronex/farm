@@ -1,13 +1,16 @@
 ﻿using SimpleJSON;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-    public GameObject Cell;
-    
-    private IScriptHolder _scriptHolder;
+    public GridLayoutGroup Inventory;
+    public Image Image;
 
-    // Use this for initialization
+    private IScriptHolder _scriptHolder;
+    private string[] _commands = {"GET", "BUY", "SELL", "APPLY"};
+
+// Use this for initialization
     void Start()
     {
         _scriptHolder = new MoonSharpScriptHolder();
@@ -17,14 +20,18 @@ public class Game : MonoBehaviour
         JSONArray bag = parsed["bag"].AsArray;
         for (int i = 0; i < bag.Count; i++)
         {
-            Instantiate(Cell, new Vector3(i - 5.0F, 4.0F, 0), Quaternion.identity);
+            Image image = Instantiate(Image);
+            image.transform.parent = Inventory.transform;
+            image.GetComponentInChildren<Text>().text= bag[i]["item"]["id"].ToString();
         }
         JSONArray farm = parsed["farm"].AsArray;
         for (int i = 0; i < farm.Count; i++)
         {
             for (int j = 0; j < farm[i].Count; j++)
             {
-                Instantiate(Cell, new Vector3(i - 5.0F, 3.0F - j * 0.7F, 0), Quaternion.identity);
+                Image image = Instantiate(Image);
+             //   image.rectTransform.position.Set(i - 5.0F, 4.0F, 0);
+            //    image.transform.parent = Inventory.transform;
             }
         }
         JSONArray shop = parsed["shop"].AsArray;
