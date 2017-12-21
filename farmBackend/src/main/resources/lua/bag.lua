@@ -20,7 +20,7 @@ function Bag(exportData)
     end
 
     local getOrCreate = function(itemId)
-        local found = utils:findInArray(bagItems, function(it) return it.item.id == itemId end)
+        local found = utils.findInArray(bagItems, function(it) return it.item.id == itemId end)
 
         if found then return found
         else found = staticData.getItems()[itemId]
@@ -30,7 +30,7 @@ function Bag(exportData)
             error ("No item with id '"..itemId.."' have been found in application")
         end
 
-        local newBagItem = {imem = found, count = 0 }
+        local newBagItem = {item = found, count = 0 }
         table.insert(bagItems, newBagItem)
         return newBagItem
     end

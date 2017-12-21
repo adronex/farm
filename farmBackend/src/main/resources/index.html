@@ -4,17 +4,54 @@
     <meta charset="UTF-8">
     <title>FarmPrototype</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/item.js"></script>
-    <script src="js/staticData.js"></script>
-    <script src="js/shop.js"></script>
-    <script src="js/bag.js"></script>
-    <script src="js/farm.js"></script>
+    <!--<script src="js/api.js"></script>-->
+    <!--<script src="js/item.js"></script>-->
+    <!--<script src="js/staticData.js"></script>-->
+    <!--<script src="js/shop.js"></script>-->
+    <!--<script src="js/bag.js"></script>-->
+    <!--<script src="js/farm.js"></script>-->
     <script>
+        function Utils() {
+
+            // ES6 Array.find substitution
+            this.findInArray = function (array, fun) {
+                for (var i = 0; i < array.length; i++) {
+                    if (fun(array[i])) {
+                        return array[i];
+                    }
+                }
+                return undefined;
+            };
+
+            // ES6 Array.map substitution
+            this.mapArray = function (source, fun) {
+                var target = [];
+                for (var i = 0; i < source.length; i++) {
+                    target.push(fun(source[i]));
+                }
+                return target;
+            };
+
+            // ES6 Object.assign substitution
+            this.copy = function (obj) {
+                if (null === obj || "object" !== typeof obj) return obj;
+                var out, v, key;
+                out = Array.isArray(obj) ? [] : {};
+                for (key in obj) {
+                    v = obj[key];
+                    out[key] = (typeof v === "object") ? this.copy(v) : v;
+                }
+                return out;
+            };
+        }
+
+        var utils = new Utils();
+
         angular.module('farmApp', [])
             .controller('GameController', function ($http, $scope, $timeout) {
                 var game = this;
                 var updateScreenDelta = 50;
+                var clientSideExecution = false;
                 var commandsToSynchronize = 1;
                 var commandsBuffer = [];
                 game.commands = ["GET", "BUY", "SELL", "APPLY"];
@@ -38,12 +75,14 @@
                 };
 
                 function clientSideExecute(request) {
-                    commandHandler(JSON.stringify(request));
-                    refreshViewData();
+                    if (clientSideExecution) {
+                        commandHandler(JSON.stringify(request));
+                        refreshViewData();
+                    }
                 }
 
-                function refreshViewData() {
-                    var actualData = JSON.parse(getDataAsString());
+                function refreshViewData(actualData) {
+                    game.staticData = actualData.staticData;
                     game.bag = actualData.bag;
                     game.shop = actualData.shop;
                     game.farm = actualData.farm;
@@ -55,7 +94,7 @@
                 }
 
                 function refreshItemInfo() {
-                    game.items = utils.mapArray(Object.values(staticData.getItems()), function (it) {
+                    game.items = utils.mapArray(Object.values(game.staticData), function (it) {
                         return game.getItemInfo(it);
                     });
                 }
@@ -79,8 +118,7 @@
                 function synchronize() {
                     $http.post("http://localhost:4567/game/execute", commandsBuffer)
                         .then(function (response) {
-                            setStateFromString(JSON.stringify(response.data));
-                            refreshViewData();
+                            refreshViewData(response.data);
                             commandsBuffer = [];
                         }, function (error) {
                             if (error.status !== -1) {
@@ -129,7 +167,7 @@
                         return style + ' unpurchasable';
                     }
                     var softMoney = utils.findInArray(game.bag, function (it) {
-                        return it.item.id === staticData.getItems().softMoney.id;
+                        return it.item.id === game.staticData.softMoney.id;
                     });
                     if (item.count > 0) {
                         return style + ' available';
@@ -156,7 +194,7 @@
                     if (!cell || !cell.queue) {
                         return style + ' empty';
                     }
-                    if (cell.queue.length === 0) {
+                    if (!cell.queue[0]) {
                         return style + ' waiting';
                     }
                     if (cell.endTime > new Date().getTime()) {
@@ -282,7 +320,7 @@
                  ng-class="game.getFarmCellStyle($parent.$index, $index)"
                  ng-click="game.onFarmCellClick($parent.$index, $index, cell)">
                 <div ng-show="cell">{{cell.id}}</div>
-                <div ng-show="cell">cd:
+                <div ng-show="cell.currentProductionTimeLeft">cd:
                     {{cell.currentProductionTimeLeft / 1000}}
                 </div>
                 <div ng-repeat="product in cell.queue">queue: {{product.type}} {{product.id}}</div>

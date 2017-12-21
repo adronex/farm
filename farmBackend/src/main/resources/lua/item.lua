@@ -35,9 +35,9 @@ function Plant(initializer)
         if #target.queue > 0 then
             error ("Already sowed with "..target.queue)
         end
-        table.insert(target.queue, utils.copy(it))
+        table.insert(target.queue, utils:copy(it))
         target.endTime = os.time() * 1000 + it.preparationTime
-        return utils.copy(target)
+        return utils:copy(target)
     end
     return it
 end
@@ -50,7 +50,7 @@ function Field(initializer)
         if not target or target.id ~= 'ground' then
             error ("Can't apply '"..it.id.."', invalid target: "..target)
         end
-        return utils.copy(it)
+        return utils:copy(it)
     end
     return it
 end

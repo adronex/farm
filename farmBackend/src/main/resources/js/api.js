@@ -13,7 +13,14 @@ function setStateFromString(dataString) {
 }
 
 function getDataAsString() {
-    return JSON.stringify({bag: bag.getCopyOfAllItems(), farm: farm.getOriginalFarmObject(), shop: shop.getCopyOfAllItems()});
+    return JSON.stringify(
+        {
+            staticData: staticData.getItems(),
+            bag: bag.getCopyOfAllItems(),
+            farm: farm.getOriginalFarmObject(),
+            shop: shop.getCopyOfAllItems()
+        }
+    );
 }
 
 function commandHandler(requestString) {

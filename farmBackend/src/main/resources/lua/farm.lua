@@ -7,10 +7,10 @@ function Farm(exportData)
         farm = exportData
     else
         farm = {}
-        for i = 0, FIELD_HEIGHT - 1, 1 do
-            farm[i] = {}
-            for j = 0, FIELD_WIDTH - 1, 1 do
-                farm[i][j] = staticData.getItems().ground
+        for x = 1, FIELD_HEIGHT, 1 do
+            farm[x] = {}
+            for y = 1, FIELD_WIDTH, 1 do
+                farm[x][y] = staticData.getItems().ground
             end
         end
     end
@@ -22,8 +22,10 @@ function Farm(exportData)
         if not target or not target.x or not target.y then
             error("Invalid target object: " .. target)
         end
+        target.x = target.x + 1 -- lua arrays start from 1
+        target.y = target.y + 1 -- lua arrays start from 1
         if bag.getOrCreate(hand.id).count <= 0 then
-            error("Not enough '" .. hand.id .. "'. Target: " .. target .. ". Cell: " .. farm[target.x][target.y])
+            error("Not enough '" .. hand.id .. "'. Target: " .. json.stringify(target) .. ". Cell: " .. json.stringify(farm[target.x][target.y]))
         end
         local item = staticData.getItems()[hand.id]
         farm[target.x][target.y] = item.use(farm[target.x][target.y])
@@ -31,9 +33,9 @@ function Farm(exportData)
     end
 
     local updateTimerDeltas = function()
-        for x = 0, #farm - 1, 1 do
-            for y = 0, #farm[x] - 1, 1 do
-                if farm[x][y] then
+        for x = 1, #farm, 1 do
+            for y = 1, #farm[x], 1 do
+                if farm[x][y] and farm[x][y].endTime then
                     local delta = farm[x][y].endTime - os.time() * 1000
                     if delta > 0 then
                         farm[x][y].currentProductionTimeLeft = delta

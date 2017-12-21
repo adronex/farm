@@ -6,7 +6,7 @@ local commands = {
 };
 
 function setState(dataString)
-    local data = json.decode(dataString)
+    local data = json.parse(dataString)
     bag = Bag(data.bag)
     farm = Farm(data.farm)
     shop = Shop()
@@ -14,7 +14,8 @@ end
 
 function getDataAsString()
 
-    return json.encode({
+    return json.stringify({
+        staticData = staticData.getItems(),
         bag = bag.getCopyOfAllItems(),
         farm = farm.getOriginalFarmObject(),
         shop = shop.getCopyOfAllItems()
@@ -22,7 +23,7 @@ function getDataAsString()
 end
 
 function commandHandler(requestString)
-    local requestArray = json.decode(requestString)
+    local requestArray = json.parse(requestString)
 
     if type(requestArray) ~= "table" then
         error("API didn't recognised request array: " .. requestString)
@@ -42,46 +43,5 @@ function commandHandler(requestString)
 
     return getDataAsString()
 end
-
-
-function Utils()
-    local findInArray = function(array, fun)
-        for _, it in pairs(array) do
-            if fun(it) then return it end
-        end
-        return nil
-    end
-
-    local mapArray = function(array, fun)
-        local mapped = {}
-        for index, it in pairs(array) do
-            mapped[index] = fun(it)
-        end
-        return mapped
-    end
-
-    local copy = function(t)
-        if type(t) ~= "table" then return t end
-        local meta = getmetatable(t)
-        local target = {}
-        for k, v in pairs(t) do
-            if type(v) == "table" then
-                target[k] = clone(v)
-            else
-                target[k] = v
-            end
-        end
-        setmetatable(target, meta)
-        return target
-    end
-
-    return {
-        findInArray = findInArray,
-        mapArray = mapArray,
-        copy = copy
-    }
-end
-
-utils = Utils()
 
 setState("{}")

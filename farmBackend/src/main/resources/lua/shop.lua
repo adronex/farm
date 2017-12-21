@@ -1,4 +1,4 @@
-function shop()
+function Shop()
     local shopItems = {
         {
             item = staticData.getItems().field,
@@ -40,19 +40,39 @@ function shop()
     local getCopy = function (itemId)
         local item = findShopItem(itemId)
         if not item then return nil end
-        return utils.copy(item)
+        return utils:copy(item)
     end
 
     local getCopyOfAllItems = function()
-        return utils.copy(shopItems)
+        return utils:copy(shopItems)
     end
 
     local buy = function(itemId)
         local item = findShopItem(itemId)
         if not item then error ("There is no shop item with id "..itemId) end
-        bag.decreaseCount(item.item.id, 1)
+        bag.decreaseCount(staticData.getItems().softMoney.id, item.buyPrice)
+        bag.increaseCount(item.item.id, 1)
+    end
+
+    local sell = function(itemId)
+        local count = bag.getOrCreate(itemId).count
+        if count == 0 then
+            error ("Bag doesn't contain enough items with id "..itemId)
+        end
+        local item = findShopItem(itemId);
+        if not item then
+            error ("You can't sell item with id "..itemId.."because shop doesn't contain it")
+        end
+        bag.decreaseCount(item.item.id, 1);
         bag.increaseCount(staticData.getItems().softMoney.id, item.sellPrice)
     end
+
+    return {
+        getCopy = getCopy,
+        getCopyOfAllItems = getCopyOfAllItems,
+        buy = buy,
+        sell = sell
+    }
 end
 
 shop = Shop()
