@@ -6,19 +6,21 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class LuaInterpreterCaller implements InterpreterCaller {
 
-	private final LuaValue functionContext;
+	private final LuaValue setStateFunction;
+	private final LuaValue executeCommandFunction;
 
 	public LuaInterpreterCaller() {
 		Globals globals = JsePlatform.standardGlobals();
-		LuaValue[] scripts = {
-				LuaValue.valueOf("lua/libs/json.lua"),
-				LuaValue.valueOf("lua/api.lua"),
-				LuaValue.valueOf("lua/item.lua"),
-				LuaValue.valueOf("lua/shop.lua"),
-				LuaValue.valueOf("lua/bag.lua"),
-				LuaValue.valueOf("lua/farm.lua")
-		};
-		functionContext = globals.get("dofile").invoke(scripts).arg1();
+		globals.get("dofile").call("lua/libs/json.lua");
+		globals.get("dofile").call("lua/utils.lua");
+		globals.get("dofile").call("lua/item.lua");
+		globals.get("dofile").call("lua/staticData.lua");
+		globals.get("dofile").call("lua/bag.lua");
+		globals.get("dofile").call("lua/farm.lua");
+		globals.get("dofile").call("lua/shop.lua");
+		globals.get("dofile").call("lua/api.lua");
+		setStateFunction = globals.get("setState");
+		executeCommandFunction = globals.get("commandHandler");
 	}
 
 	@Override
@@ -26,11 +28,11 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		if (savedState == null) {
 			savedState = "{}";
 		}
-		functionContext.call(LuaValue.valueOf(savedState));
+		setStateFunction.call(LuaValue.valueOf(savedState));
 	}
 
 	@Override
 	public String executeCommand(String requestBody) {
-		return functionContext.call(LuaValue.valueOf(requestBody)).tojstring();
+		return executeCommandFunction.call(LuaValue.valueOf(requestBody)).tojstring();
 	}
 }

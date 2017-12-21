@@ -8,6 +8,12 @@ public abstract class AbstractLuaScriptHolder
     protected AbstractLuaScriptHolder()
     {
         _scripts.Add(ReadScript("lua/libs/json"));
+        _scripts.Add(ReadScript("lua/utils"));
+        _scripts.Add(ReadScript("lua/item"));
+        _scripts.Add(ReadScript("lua/staticData"));
+        _scripts.Add(ReadScript("lua/bag"));
+        _scripts.Add(ReadScript("lua/farm"));
+        _scripts.Add(ReadScript("lua/shop"));
         _scripts.Add(ReadScript("lua/api"));
         foreach (var script in _scripts)
         {
