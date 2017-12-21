@@ -10,8 +10,8 @@ function Item(initializer)
     if initializer.use then
         use = initializer.use
     end
-    local countable = false
-    if initializer.countable then
+    local countable = true
+    if initializer.countable ~= nil then
         countable = initializer.countable
     end
 

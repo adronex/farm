@@ -13,7 +13,7 @@ public abstract class AbstractJsScriptHolder
         scripts.Add(ReadScript("js/shop"));
         scripts.Add(ReadScript("js/bag"));
         scripts.Add(ReadScript("js/farm"));
-        foreach (string script in scripts)
+        foreach (var script in scripts)
         {
             Eval(script);
         }
