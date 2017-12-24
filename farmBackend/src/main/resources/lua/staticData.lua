@@ -16,12 +16,12 @@ function StaticData()
     items.wateringCan = Item({
         id = "wateringCan",
         type = itemTypes.tool,
-        uncountable = true
+        countable = false
     });
     items.sickle = Item({
         id = "sickle",
         type = itemTypes.tool,
-        uncountable = true,
+        countable = false,
         use = function(target)
             if not target or target.id ~= items.field.id then
                 error("Can't apply 'sickle', invalid target: " .. target)
