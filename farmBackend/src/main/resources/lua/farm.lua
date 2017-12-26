@@ -17,10 +17,10 @@ function Farm(exportData)
 
     local applyHandToCell = function(hand, target)
         if not hand or not hand.id then
-            error("Invalid object in hand: " .. hand)
+            error("Invalid object in hand: " .. json.stringify(hand))
         end
         if not target or not target.x or not target.y then
-            error("Invalid target object: " .. target)
+            error("Invalid target object: " .. json.stringify(target))
         end
         target.x = target.x + 1 -- lua arrays start from 1
         target.y = target.y + 1 -- lua arrays start from 1
