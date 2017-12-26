@@ -1,11 +1,17 @@
 ﻿using System;
-using System.Linq;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
+    private Api _api;
+    private IScriptHolder _scriptHolder;
+    private readonly string[] _commands = {"GET", "BUY", "SELL", "APPLY"};
+    private JSONArray _bag;
+    private JSONArray _farm;
+    private JSONArray _shop;
+
     public GridLayoutGroup Commands;
     public GridLayoutGroup Inventory;
     public GridLayoutGroup Shop;
@@ -13,20 +19,14 @@ public class Game : MonoBehaviour
     public Button Button;
     public Image Image;
 
-    private IScriptHolder _scriptHolder;
-    private string[] _commands = {"GET", "BUY", "SELL", "APPLY"};
-    private JSONArray _bag;
-    private JSONArray _farm;
-    private JSONArray _shop;
+    private JSONNode _hand;
+    private JSONNode _target;
 
 // Use this for initialization
     void Start()
     {
-        LoadData();
-        InitializeCommandButtons();
-        InitializeInventoryTable();
-        InitializeShopTable();
-        InitializeFarmTable();
+        _api = gameObject.AddComponent<Api>();
+        Initialize();
     }
 
     // Update is called once per frame
@@ -34,7 +34,13 @@ public class Game : MonoBehaviour
     {
     }
 
-    private void LoadData()
+    private void Initialize()
+    {
+        CallRestApi("GET");
+    }
+
+    // todo: execute scripts on client side
+    private void DataFromScripts()
     {
         _scriptHolder = new MoonSharpScriptHolder();
         _scriptHolder.GetData();
@@ -43,99 +49,133 @@ public class Game : MonoBehaviour
         _bag = parsed["bag"].AsArray;
         _farm = parsed["farm"].AsArray;
         _shop = parsed["shop"].AsArray;
-        Debug.Log(initialData);
+    }
+
+    private void ParseData(string data)
+    {
+        var parsed = JSON.Parse(data);
+        _bag = parsed["bag"].AsArray;
+        _farm = parsed["farm"].AsArray;
+        _shop = parsed["shop"].AsArray;
+        InitializeCommandButtons();
+        InitializeInventoryTable();
+        InitializeShopTable();
+        InitializeFarmTable();
     }
 
     private void InitializeCommandButtons()
     {
+        foreach (Transform child in Commands.transform)
+        {
+            Destroy(child.gameObject);
+        }
         foreach (var command in _commands)
         {
             var button = Instantiate(Button);
+            button.name = command;
             button.GetComponentInChildren<Text>().text = command;
             button.transform.SetParent(Commands.transform, false);
+            var currentCommand = command;
+            button.onClick.AddListener(delegate { OnCommandInvoked(currentCommand); });
         }
     }
 
     private void InitializeInventoryTable()
     {
+        foreach (Transform child in Inventory.transform)
+        {
+            Destroy(child.gameObject);
+        }
         for (var i = 0; i < _bag.Count; i++)
         {
             var image = Instantiate(Image);
             image.transform.SetParent(Inventory.transform, false);
-            image.GetComponentInChildren<Text>().text = _bag[i]["item"]["id"];
-            image.color = GetBagItemColor(_bag[i]);
-        }   
+            image.GetComponentInChildren<Text>().text = GetInventoryItemText(_bag[i]);
+            image.color = Styles.GetBagItemColor(_bag[i]);
+            var index = i;
+            image.GetComponent<Button>().onClick.AddListener(delegate { OnHandChosen(_bag[index]["item"]); });
+        }
     }
 
     private void InitializeShopTable()
     {
+        foreach (Transform child in Shop.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        var softMoney = Utils.FindInJsonArray(_bag, it => it["item"]["id"] == "softMoney");
         for (var i = 0; i < _shop.Count; i++)
         {
             var image = Instantiate(Image);
             image.transform.SetParent(Shop.transform, false);
-            image.GetComponentInChildren<Text>().text = _shop[i]["item"]["id"];
-            image.color = GetShopItemColor(_shop[i]);
-        }   
+            image.GetComponentInChildren<Text>().text = GetShopItemText(_shop[i]);
+            image.color = Styles.GetShopItemColor(_shop[i], softMoney["count"].AsInt);
+            var index = i;
+            image.GetComponent<Button>().onClick.AddListener(delegate { OnHandChosen(_shop[index]["item"]); });
+        }
     }
 
     private void InitializeFarmTable()
     {
-        for (var i = 0; i < _farm.Count; i++)
+        foreach (Transform child in Farm.transform)
         {
-            for (var j = 0; j < _farm[i].Count; j++)
+            Destroy(child.gameObject);
+        }
+        for (var x = 0; x < _farm.Count; x++)
+        {
+            for (var y = 0; y < _farm[x].Count; y++)
             {
+                _farm[x][y]["x"] = x;
+                _farm[x][y]["y"] = y;
                 var image = Instantiate(Image);
                 image.transform.SetParent(Farm.transform, false);
-                var farmInfo = _farm[i][j]["id"] + " " + _farm[i][j]["type"];
+                var farmInfo = _farm[x][y]["id"] + " " + _farm[x][y]["type"];
                 image.GetComponentInChildren<Text>().text = farmInfo;
-                image.color = GetFarmCellColor(_farm[i][j]);
+                image.color = Styles.GetFarmCellColor(_farm[x][y]);
+                var row = x;
+                var cell = y;
+                image.GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_farm[row][cell]); });
             }
         }
     }
-    
-    private Color GetBagItemColor(JSONNode bagItem)
+
+    private void OnHandChosen(JSONNode handNode)
     {
-        if (!bagItem["item"]["countable"].AsBool) {
-            return new Color(1f, 0.95f, 0.54f);
-        }
-        if (bagItem["count"].AsInt > 0) {
-            return new Color(0.49f, 1f, 0.54f);
-        }
-        return new Color(0.6f, 0.6f, 0.6f);
-    }
-    
-    private Color GetShopItemColor(JSONNode shopItem)
-    {
-        var softMoney = FindItem(_bag, it => it["item"]["id"] == "softMoney");
-        if (shopItem["buyPrice"].AsInt > softMoney["count"].AsInt) {
-            return new Color(1f, 0.61f, 0.6f);
-        }
-        return new Color(0.49f, 1f, 0.54f);
+        _hand = handNode;
     }
 
-    private Color GetFarmCellColor(JSONNode farmCell)
+    private void OnTargetChosen(JSONNode targetNode)
     {
-        if (farmCell["queue"] == null) {
-            return new Color(0.6f, 0.6f, 0.6f);
-        }
-        if (farmCell["queue"][0] == null) {
-            return new Color(0.44f, 0.64f, 1f);
-        }
-        if (farmCell["endTime"].AsInt > DateTime.Now.Ticks) {
-            return new Color(1f, 0.61f, 0.6f);
-        }
-        return new Color(0.49f, 1f, 0.54f);
+        _target = targetNode;
     }
 
-    private JSONNode FindItem(JSONArray array, Func<JSONNode, bool> func)
+    private void OnCommandInvoked(string command)
+    {  
+        CallRestApi(command);
+    }
+
+    private void CallRestApi(string command)
     {
-        foreach (var node in array)
-        {
-            if (func(node))
-            {
-                return node;
-            }
-        }
-        return null;
-    } 
+        var element = new JSONObject();
+        element["command"] = command;
+        element["hand"] = _hand;
+        element["target"] = _target;
+        var requestBody = new JSONArray();
+        requestBody.Add(element);
+        _api.ExecuteCommand(
+            requestBody,
+            ParseData,
+            Debug.LogError
+        );
+    }
+
+    private static string GetInventoryItemText(JSONNode inventoryItem)
+    {
+        return inventoryItem["item"]["id"] + "\ncount: " + inventoryItem["count"].AsInt;
+    }
+
+    private static string GetShopItemText(JSONNode shopItem)
+    {
+        return shopItem["item"]["id"] + "\nbuy price: " + shopItem["buyPrice"].AsInt + "\nsell price: " + shopItem["sellPrice"].AsInt;
+    }
 }

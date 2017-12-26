@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -25,7 +26,7 @@ public class HttpRequestHandler
         }
     }
     
-    public IEnumerator PostRequest(string url, string requestBody)
+    public IEnumerator PostRequest(string url, string requestBody, Action<string> successCallback, Action<string> errorCallback)
     {
         var uwr = new UnityWebRequest(url, "POST");
         var jsonToSend = new System.Text.UTF8Encoding().GetBytes(requestBody);
@@ -38,11 +39,11 @@ public class HttpRequestHandler
 
         if (uwr.isNetworkError)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
+            errorCallback(uwr.error);
         }
         else
         {
-            GameState.GetInstance().SetState(JSON.Parse(uwr.downloadHandler.text));
+            successCallback(uwr.downloadHandler.text);
         }
     }
 }
