@@ -45,16 +45,18 @@ public class FarmCell : MonoBehaviour
 
 	private static Color GetFarmCellColor(JSONNode farmCell)
 	{
+		var selected = farmCell["x"] == GameState.GetInstance().Target["x"] && farmCell["y"] == GameState.GetInstance().Target["y"];
+		var alpha = selected ? 0.6f : 1f;
 		if (farmCell["queue"] == null) {
-			return new Color(0.6f, 0.6f, 0.6f);
+			return new Color(0.86f, 0.86f, 0.86f, alpha);
 		}
 		if (farmCell["queue"][0] == null) {
-			return new Color(0.44f, 0.64f, 1f);
+			return new Color(0.44f, 0.64f, 1f, alpha);
 		}
 		if (farmCell["endTime"].AsDouble > Utils.Now()) {
-			return new Color(1f, 0.61f, 0.6f);
+			return new Color(1f, 0.61f, 0.6f, alpha);
 		}
-		return new Color(0.49f, 1f, 0.54f);
+		return new Color(0.49f, 1f, 0.54f, alpha);
 	}
 
 	private string GetFarmCellText(JSONNode farmCell)
@@ -62,8 +64,9 @@ public class FarmCell : MonoBehaviour
 		return "id: " + farmCell["id"] + "\ntype: " + farmCell["type"] + "\ntime left: " + CurrentTimer.ToString("0.00");
 	}
 
-	private static void OnTargetChosen(JSONNode targetNode)
+	private void OnTargetChosen(JSONNode targetNode)
 	{
 		GameState.GetInstance().Target = targetNode;
+		GetComponentInParent<Game>().InitializeDynamicData();
 	}
 }

@@ -9,8 +9,8 @@ public class GameState
     private JSONArray _farm;
     private JSONArray _shop;
     
-    public JSONNode Hand;
-    public JSONNode Target;
+    public JSONNode Hand = new JSONObject();
+    public JSONNode Target = new JSONObject();
     
     public static GameState GetInstance()
     {

@@ -50,6 +50,11 @@ public class Game : MonoBehaviour
         var parsed = JSON.Parse(data);
         GameState.GetInstance().SetState(parsed);
         InitializeCommandButtons();
+        InitializeDynamicData();
+    }
+
+    public void InitializeDynamicData()
+    {
         InitializeBagTable();
         InitializeShopTable();
         InitializeFarmTable();

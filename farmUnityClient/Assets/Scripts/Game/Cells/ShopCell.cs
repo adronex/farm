@@ -27,10 +27,12 @@ public class ShopCell : MonoBehaviour
     
 	private static Color GetShopItemColor(JSONNode shopItem, int softMoney)
 	{
+		var selected = shopItem["item"]["id"] == GameState.GetInstance().Hand["id"];
+		var alpha = selected ? 0.6f : 1f;
 		if (shopItem["buyPrice"].AsInt > softMoney) {
-			return new Color(1f, 0.61f, 0.6f);
+			return new Color(1f, 0.61f, 0.6f, alpha);
 		}
-		return new Color(0.49f, 1f, 0.54f);
+		return new Color(0.49f, 1f, 0.54f, alpha);
 	}
 
 	private static string GetShopItemText(JSONNode shopItem)
@@ -38,8 +40,9 @@ public class ShopCell : MonoBehaviour
 		return shopItem["item"]["id"] + "\nbuy price: " + shopItem["buyPrice"].AsInt + "\nsell price: " + shopItem["sellPrice"].AsInt;
 	}
 
-	private static void OnHandChosen(JSONNode handNode)
+	private void OnHandChosen(JSONNode handNode)
 	{
 		GameState.GetInstance().Hand = handNode;
+		GetComponentInParent<Game>().InitializeDynamicData();
 	}
 }

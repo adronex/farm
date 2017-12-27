@@ -27,13 +27,15 @@ public class BagCell : MonoBehaviour
 	
 	private static Color GetBagItemColor(JSONNode bagItem)
 	{
+		var selected = bagItem["item"]["id"] == GameState.GetInstance().Hand["id"];
+		var alpha = selected ? 0.6f : 1f;
 		if (!bagItem["item"]["countable"].AsBool) {
-			return new Color(1f, 0.95f, 0.54f);
+			return new Color(1f, 0.95f, 0.54f, alpha);
 		}
 		if (bagItem["count"].AsInt > 0) {
-			return new Color(0.49f, 1f, 0.54f);
+			return new Color(0.49f, 1f, 0.54f, alpha);
 		}
-		return new Color(0.6f, 0.6f, 0.6f);
+		return new Color(0.6f, 0.6f, 0.6f, alpha);
 	}
 
 	private static string GetBagItemText(JSONNode inventoryItem)
@@ -41,8 +43,9 @@ public class BagCell : MonoBehaviour
 		return inventoryItem["item"]["id"] + "\ncount: " + inventoryItem["count"].AsInt;
 	}
 
-	private static void OnHandChosen(JSONNode handNode)
+	private void OnHandChosen(JSONNode handNode)
 	{
 		GameState.GetInstance().Hand = handNode;
+		GetComponentInParent<Game>().InitializeDynamicData();
 	}
 }
