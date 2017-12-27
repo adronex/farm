@@ -17,12 +17,17 @@ public class Game : MonoBehaviour
     public Image ShopCell;
     public Image FarmCell;
 
-
+    private JSONArray _executedCommands = new JSONArray();
+    private const int CommandsToSynchronize = 10;
+    
     // Use this for initialization
     void Start()
     {
         _api = gameObject.AddComponent<Api>();
-        Initialize();
+        _scriptHolder = new MoonSharpScriptHolder();
+        InitializeCommandButtons();
+        _scriptHolder.SetState(new JSONObject());
+        OnCommandInvoked("GET");
     }
 
     // Update is called once per frame
@@ -30,26 +35,21 @@ public class Game : MonoBehaviour
     {
     }
 
-    private void Initialize()
-    {
-        CallRestApi("GET");
-    }
-
     // todo: execute scripts on client side
-    private void DataFromScripts()
-    {
-        _scriptHolder = new MoonSharpScriptHolder();
-        _scriptHolder.GetData();
-        var initialData = _scriptHolder.GetData();
-        var parsed = JSON.Parse(initialData);
-        GameState.GetInstance().SetState(parsed);
-    }
+//    private void DataFromScripts()
+//    {
+//        _scriptHolder = new MoonSharpScriptHolder();
+//        _scriptHolder.ExecuteCommand();
+//        var initialData = _scriptHolder.ExecuteCommand();
+//        var parsed = JSON.Parse(initialData);
+//        GameState.GetInstance().SetState(parsed);
+//    }
 
     private void ParseData(string data)
     {
         var parsed = JSON.Parse(data);
         GameState.GetInstance().SetState(parsed);
-        InitializeCommandButtons();
+        _scriptHolder.SetState(parsed.AsObject);
         InitializeDynamicData();
     }
 
@@ -126,28 +126,39 @@ public class Game : MonoBehaviour
         }
     }
 
-    private static void OnHandChosen(JSONNode handNode)
-    {
-        GameState.GetInstance().Hand = handNode;
-    }
-
     private void OnCommandInvoked(string command)
     {  
-        CallRestApi(command);
+        var commandJsonObject = new JSONObject();
+        commandJsonObject["command"] = command;
+        commandJsonObject["hand"] = GameState.GetInstance().Hand;
+        commandJsonObject["target"] = GameState.GetInstance().Target;
+        _executedCommands.Add(commandJsonObject);
+        var synchNeeded = command == "GET" || _executedCommands.Count >= CommandsToSynchronize;
+        if (!synchNeeded)
+        {
+            CallClientSideApi(commandJsonObject);        
+        }
+        else
+        { 
+            CallRestApi();
+        }
     }
 
-    private void CallRestApi(string command)
+    private void CallClientSideApi(JSONObject commandJsonObject)
     {
-        var element = new JSONObject();
-        element["command"] = command;
-        element["hand"] = GameState.GetInstance().Hand;
-        element["target"] = GameState.GetInstance().Target;
-        var requestBody = new JSONArray();
-        requestBody.Add(element);
+        var arrayWrapper = new JSONArray();
+        arrayWrapper.Add(commandJsonObject);
+        var apiResponse = _scriptHolder.ExecuteCommands(arrayWrapper);
+        ParseData(apiResponse);
+    }
+
+    private void CallRestApi()
+    {
         _api.ExecuteCommand(
-            requestBody,
+            _executedCommands,
             ParseData,
             Debug.LogError
         );
+        _executedCommands = new JSONArray();
     }
 }

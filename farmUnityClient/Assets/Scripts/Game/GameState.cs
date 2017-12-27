@@ -25,6 +25,16 @@ public class GameState
         _shop = state["shop"].AsArray;
     }
 
+    public override string ToString()
+    {
+        var jsonObject = new JSONObject();
+        jsonObject["staticData"] = _staticData;
+        jsonObject["bag"] = _bag;
+        jsonObject["farm"] = _farm;
+        jsonObject["shop"] = _shop;
+        return jsonObject.ToString();
+    }
+
     public JSONArray StaticData
     {
         get { return _staticData; }

@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MoonSharp.Interpreter;
-using MoonSharp.Interpreter.Loaders;
-using UnityEngine;
+﻿using MoonSharp.Interpreter;
+using SimpleJSON;
 
 public class MoonSharpScriptHolder : AbstractLuaScriptHolder, IScriptHolder
 {
@@ -13,8 +10,13 @@ public class MoonSharpScriptHolder : AbstractLuaScriptHolder, IScriptHolder
         _script.DoString(script);
     }
 
-    public string GetData()
+    public void SetState(JSONObject oldState)
     {
-        return _script.Call(_script.Globals["getDataAsString"]).String;
+        _script.Call(_script.Globals["setState"], oldState.ToString());
+    }
+
+    public string ExecuteCommands(JSONArray commandsArray)
+    {
+        return _script.Call(_script.Globals["commandHandler"], commandsArray.ToString()).String;
     }
 }

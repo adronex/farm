@@ -1,4 +1,8 @@
-﻿public interface IScriptHolder
+﻿using SimpleJSON;
+
+public interface IScriptHolder
 {
-    string GetData();
+    void SetState(JSONObject oldState);
+    
+    string ExecuteCommands(JSONArray jsonArray);
 }
