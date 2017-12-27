@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,8 +12,6 @@ public class FarmCell : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		Coroutine timer =  StartCoroutine(TimerIenumerator(5f, () => GetFarmCellText(_cellState)));
-		//StopCoroutine(timer);
 	}
 	
 	// Update is called once per frame
@@ -27,20 +23,24 @@ public class FarmCell : MonoBehaviour
 	{
 		_cellState = farmNode;
 		transform.SetParent(parentFarm.transform, false);
-		var farmInfo = GetFarmCellText(_cellState);
-		GetComponentInChildren<Text>().text = farmInfo;
+		GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
 		GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
 		GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_cellState); });
+		CurrentTimer = _cellState["currentProductionTimeLeft"].AsFloat / 1000;
+		StartCoroutine(TimerIenumerator());
 	}
 
-	private IEnumerator TimerIenumerator(float timer, Action endCallback)
+	private IEnumerator TimerIenumerator()
 	{
-		while (timer > 0)
+		while (CurrentTimer > 0)
 		{
-			timer -= Time.deltaTime;
+			CurrentTimer -= Time.deltaTime;
+			GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
 			yield return null;
 		}
-		endCallback();
+		CurrentTimer = 0;
+		GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
+		GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
 	}
 
 	private static Color GetFarmCellColor(JSONNode farmCell)
@@ -57,9 +57,9 @@ public class FarmCell : MonoBehaviour
 		return new Color(0.49f, 1f, 0.54f);
 	}
 
-	private static string GetFarmCellText(JSONNode farmCell)
+	private string GetFarmCellText(JSONNode farmCell)
 	{
-		return farmCell["id"] + " " + farmCell["type"] + " " + "\ntime left: " + farmCell["currentProductionTimeLeft"].AsFloat;
+		return "id: " + farmCell["id"] + "\ntype: " + farmCell["type"] + "\ntime left: " + CurrentTimer.ToString("0.00");
 	}
 
 	private static void OnTargetChosen(JSONNode targetNode)
