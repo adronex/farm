@@ -37,7 +37,7 @@ public class HttpRequestHandler
         //Send the request then wait here until it returns
         yield return uwr.SendWebRequest();
 
-        if (uwr.isNetworkError)
+        if (uwr.isNetworkError || uwr.isHttpError)
         {
             errorCallback(uwr.error);
         }

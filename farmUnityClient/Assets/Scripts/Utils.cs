@@ -18,7 +18,7 @@ public class Utils
 
     public static long Now()
     {
-        return DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks /
+        return DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks /
                TimeSpan.TicksPerMillisecond;
     }
 }
