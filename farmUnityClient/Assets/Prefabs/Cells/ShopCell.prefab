@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222289855136149944}
   - component: {fileID: 114227828189255590}
   - component: {fileID: 114166003360678932}
+  - component: {fileID: 114854047949104178}
   m_Layer: 5
   m_Name: ShopCell
   m_TagString: Untagged
@@ -147,6 +148,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+--- !u!114 &114854047949104178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1813891035068750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65f944374164a5594527ac8e89457fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222031963382643222
 CanvasRenderer:
   m_ObjectHideFlags: 1
