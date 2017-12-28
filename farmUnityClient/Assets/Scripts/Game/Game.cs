@@ -18,7 +18,7 @@ public class Game : MonoBehaviour
     public Image FarmCell;
 
     private JSONArray _executedCommands = new JSONArray();
-    private const int CommandsToSynchronize = 10;
+    private const int CommandsToSynchronize = 1;
     
     // Use this for initialization
     void Start()
@@ -41,11 +41,11 @@ public class Game : MonoBehaviour
     {
         var tooMuchToBear = 0;
         var gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
-        while (gameObjectsCount < _commands.Length && tooMuchToBear < 50)
+        while (gameObjectsCount > _commands.Length && tooMuchToBear < 50)
         {
-            var button = Instantiate(Button);
-            button.transform.SetParent(Commands.transform, false);
-            gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
+            var buttons = Commands.GetComponentsInChildren<Button>();
+            Destroy(buttons[gameObjectsCount - 1].gameObject);
+            gameObjectsCount--;
             tooMuchToBear++;
             if (tooMuchToBear == 50)
             {
@@ -53,10 +53,10 @@ public class Game : MonoBehaviour
             }
         }
         tooMuchToBear = 0;
-        while (gameObjectsCount > _commands.Length && tooMuchToBear < 50)
+        while (gameObjectsCount < _commands.Length && tooMuchToBear < 50)
         {
-            var buttons = Commands.GetComponentsInChildren<Button>();
-            Destroy(buttons[buttons.Length - 1].gameObject);
+            var button = Instantiate(Button);
+            button.transform.SetParent(Commands.transform, false);
             gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
             tooMuchToBear++;
             if (tooMuchToBear == 50)
@@ -70,11 +70,11 @@ public class Game : MonoBehaviour
     {
         var tooMuchToBear = 0;
         var gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
-        while (gameObjectsCount < dataCount && tooMuchToBear < 150)
+        while (gameObjectsCount > dataCount && tooMuchToBear < 150)
         {
-            var image = Instantiate(cell);
-            image.transform.SetParent(parent.transform, false);
-            gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
+            var images = parent.GetComponentsInChildren<Image>();
+            Destroy(images[gameObjectsCount - 1].gameObject);
+            gameObjectsCount--;
             tooMuchToBear++;
             if (tooMuchToBear == 150)
             {
@@ -82,10 +82,10 @@ public class Game : MonoBehaviour
             }
         }
         tooMuchToBear = 0;
-        while (gameObjectsCount > dataCount && tooMuchToBear < 150)
+        while (gameObjectsCount < dataCount && tooMuchToBear < 150)
         {
-            var images = parent.GetComponentsInChildren<Image>();
-            Destroy(images[images.Length - 1].gameObject);
+            var image = Instantiate(cell);
+            image.transform.SetParent(parent.transform, false);
             gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
             tooMuchToBear++;
             if (tooMuchToBear == 150)

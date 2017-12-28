@@ -1,11 +1,11 @@
 function Item(initializer)
     if not initializer.id or not initializer.type then
-        error ("Id and type parameters are mandatory")
+        error("Id and type parameters are mandatory")
     end
     local id = initializer.id
     local type = initializer.type
     local use = function(target)
-        error ("'use' function isn't implemented' for item "..id.." of type "..type)
+        error("'use' function isn't implemented' for item " .. id .. " of type " .. type)
     end
     if initializer.use then
         use = initializer.use
@@ -30,12 +30,13 @@ function Plant(initializer)
     it.harvestValue = initializer.harvestValue;
     it.use = function(target)
         if not target or target.type ~= "field" then
-            error ("Can't apply '"..it.id.."', invalid target: "..target)
+            error("Can't apply '" .. it.id .. "', invalid target: " .. target)
         end
         if #target.queue > 0 then
-            error ("Already sowed with "..target.queue)
+            error("Already sowed with " .. target.queue)
         end
         table.insert(target.queue, utils:copy(it))
+        bag.decreaseCount(it.id, 1)
         target.endTime = os.time() * 1000 + it.preparationTime
         return utils:copy(target)
     end
@@ -46,10 +47,11 @@ function Field(initializer)
     initializer.type = 'field'
     local it = Item(initializer)
     it.queue = {}
-    it.use = function (target)
+    it.use = function(target)
         if not target or target.id ~= 'ground' then
-            error ("Can't apply '"..it.id.."', invalid target: "..target)
+            error("Can't apply '" .. it.id .. "', invalid target: " .. target)
         end
+        bag.decreaseCount(it.id, 1)
         return utils:copy(it)
     end
     return it

@@ -29,7 +29,6 @@ function Farm(exportData)
         end
         local item = staticData.getItems()[hand.id]
         farm[target.x][target.y] = item.use(farm[target.x][target.y])
-        bag.decreaseCount(hand.id, 1)
     end
 
     local updateTimerDeltas = function()
