@@ -151,8 +151,18 @@ public class Game : MonoBehaviour
 
     private void SetFarmTable()
     {
-        InstantiateGameCells(100, Farm, FarmCell);
         var farmData = GameState.GetInstance().Farm;
+        var farmDataObjectsCount = 0;
+        for (var x = 0; x < farmData.Count; x++)
+        {
+            for (var y = 0; y < farmData[x].Count; y++)
+            {
+                farmDataObjectsCount = farmData.Count * farmData[x].Count;
+                Farm.constraintCount = farmData[x].Count;
+                break;
+            }
+        }            
+        InstantiateGameCells(farmDataObjectsCount, Farm, FarmCell);
         var farmCells = Farm.GetComponentsInChildren<Image>();
         for (var x = 0; x < farmData.Count; x++)
         {
@@ -160,7 +170,7 @@ public class Game : MonoBehaviour
             {
                 farmData[x][y]["x"] = x;
                 farmData[x][y]["y"] = y;
-                var cellIndex = x * farmData.Count + y;
+                var cellIndex = x * farmData[x].Count + y;
                 farmCells[cellIndex].GetComponent<FarmCell>().SetState(Farm, farmData[x][y]);
             }
         }

@@ -18,6 +18,7 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		globals.get("dofile").call("lua/bag.lua");
 		globals.get("dofile").call("lua/farm.lua");
 		globals.get("dofile").call("lua/shop.lua");
+		globals.get("dofile").call("lua/worker.lua");
 		globals.get("dofile").call("lua/api.lua");
 		setStateFunction = globals.get("setState");
 		executeCommandFunction = globals.get("commandHandler");

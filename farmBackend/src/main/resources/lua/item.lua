@@ -29,6 +29,7 @@ function Plant(initializer)
     it.preparationTime = initializer.preparationTime;
     it.harvestValue = initializer.harvestValue;
     it.use = function(target)
+        bag.decreaseCount(it.id, 1)
         if not target or target.type ~= "field" then
             error("Can't apply '" .. it.id .. "', invalid target: " .. target)
         end
@@ -36,7 +37,6 @@ function Plant(initializer)
             error("Already sowed with " .. target.queue)
         end
         table.insert(target.queue, utils:copy(it))
-        bag.decreaseCount(it.id, 1)
         target.endTime = os.time() * 1000 + it.preparationTime
         return utils:copy(target)
     end
@@ -48,10 +48,10 @@ function Field(initializer)
     local it = Item(initializer)
     it.queue = {}
     it.use = function(target)
+        bag.decreaseCount(it.id, 1)
         if not target or target.id ~= 'ground' then
             error("Can't apply '" .. it.id .. "', invalid target: " .. target)
         end
-        bag.decreaseCount(it.id, 1)
         return utils:copy(it)
     end
     return it

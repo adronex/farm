@@ -29,7 +29,10 @@ public class FarmCell : MonoBehaviour
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_cellState); });
-        CurrentTimer = _cellState["currentProductionTimeLeft"].AsFloat / 1000;
+        if (_cellState["currentProductionTimeLeft"] != null)
+        {
+            CurrentTimer = _cellState["currentProductionTimeLeft"].AsFloat / 1000;
+        }
         _timer = StartCoroutine(TimerIenumerator());
     }
 

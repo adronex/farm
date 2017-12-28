@@ -1,22 +1,12 @@
 function Shop()
     local shopItems = {
         {
-            item = staticData.getItems().field,
-            buyPrice = 4,
-            sellPrice = 1
-        },
-        {
             item = staticData.getItems().well,
             buyPrice = 0,
             sellPrice = 0
         },
         {
             item = staticData.getItems().wateringCan,
-            buyPrice = 0,
-            sellPrice = 0
-        },
-        {
-            item = staticData.getItems().sickle,
             buyPrice = 0,
             sellPrice = 0
         },

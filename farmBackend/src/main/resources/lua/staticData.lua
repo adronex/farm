@@ -2,6 +2,8 @@ function StaticData()
     local itemTypes = {
         currency = "currency",
         foundation = "foundation",
+        road = "road",
+        spawnBox = "spawnBox",
         building = "building",
         tool = "tool",
         seed = "seed"
@@ -53,12 +55,20 @@ function StaticData()
         id = "ground",
         type = itemTypes.foundation
     });
+    items.road = Item({
+        id = "road",
+        type = itemTypes.road
+    });
     items.field = Field({
         id = "field"
     });
     items.well = Item({
         id = "well",
         type = itemTypes.foundation
+    });
+    items.carrotSpawnBox = Item({
+        id = "carrotSpawnBox",
+        type = itemTypes.spawnBox
     });
 
     local getItemTypes = function()

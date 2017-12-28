@@ -15,6 +15,10 @@ function Bag(exportData)
             {
                 item = staticData.getItems().wateringCan,
                 count = 1
+            },
+            {
+                item = staticData.getItems().sickle,
+                count = 1
             }
         }
     end

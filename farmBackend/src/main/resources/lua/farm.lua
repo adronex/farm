@@ -1,31 +1,38 @@
 function Farm(exportData)
-    local FIELD_HEIGHT = 10;
-    local FIELD_WIDTH = 10;
+    local width = 5;
+    local height = 7;
     local farm;
 
     if exportData and type(exportData) == "table" then
         farm = exportData
     else
         farm = {}
-        for x = 1, FIELD_HEIGHT, 1 do
+        for x = 1, height, 1 do
             farm[x] = {}
-            for y = 1, FIELD_WIDTH, 1 do
+            for y = 1, width, 1 do
                 farm[x][y] = staticData.getItems().ground
             end
         end
+        farm[1][3] = staticData.getItems().carrotSpawnBox;
+        farm[2][3] = staticData.getItems().road;
+        farm[3][3] = staticData.getItems().road;
+        farm[4][3] = staticData.getItems().road;
+        farm[5][3] = staticData.getItems().road;
+        farm[6][3] = staticData.getItems().road;
+        farm[7][3] = staticData.getItems().road;
+        farm[2][2] = staticData.getItems().field;
+        farm[3][2] = staticData.getItems().field;
+        farm[4][2] = staticData.getItems().field;
+        farm[5][2] = staticData.getItems().field;
+        farm[5][4] = staticData.getItems().well;
     end
 
-    local applyHandToCell = function(hand, target)
+    local applyHandToCell = function(hand, target, worker)
         if not hand or not hand.id then
             error("Invalid object in hand: " .. json.stringify(hand))
         end
         if not target or not target.x or not target.y then
             error("Invalid target object: " .. json.stringify(target))
-        end
-        target.x = target.x + 1 -- lua arrays start from 1
-        target.y = target.y + 1 -- lua arrays start from 1
-        if bag.getOrCreate(hand.id).count <= 0 then
-            error("Not enough '" .. hand.id .. "'. Target: " .. json.stringify(target) .. ". Cell: " .. json.stringify(farm[target.x][target.y]))
         end
         local item = staticData.getItems()[hand.id]
         farm[target.x][target.y] = item.use(farm[target.x][target.y])
@@ -52,6 +59,8 @@ function Farm(exportData)
     end
 
     return {
+        width = width,
+        height = height,
         applyHandToCell = applyHandToCell,
         getOriginalFarmObject = getOriginalFarmObject
     }

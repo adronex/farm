@@ -2,7 +2,9 @@ local commands = {
     get = "GET",
     buy = "BUY",
     sell = "SELL",
-    apply = "APPLY"
+    apply = "APPLY",
+    assign = "ASSIGN",
+    move = "MOVE"
 };
 
 function setState(dataString)
@@ -16,6 +18,7 @@ function getDataAsString()
 
     return json.stringify({
         staticData = staticData.getItems(),
+        workers = workers,
         bag = bag.getCopyOfAllItems(),
         farm = farm.getOriginalFarmObject(),
         shop = shop.getCopyOfAllItems()
@@ -37,6 +40,8 @@ function commandHandler(requestString)
         elseif requestObject.command == commands.sell then
             shop.sell(requestObject.hand.id)
         elseif requestObject.command == commands.apply then
+            requestObject.target.x = requestObject.target.x + 1 -- lua arrays start from 1
+            requestObject.target.y = requestObject.target.y + 1 -- lua arrays start from 1
             farm.applyHandToCell(requestObject.hand, requestObject.target)
         end
     end
