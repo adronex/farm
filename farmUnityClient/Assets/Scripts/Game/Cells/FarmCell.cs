@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class FarmCell : MonoBehaviour
 {
     private JSONNode _cellState;
+    private Coroutine _timer;
 
     public float CurrentTimer = -1;
 
@@ -26,9 +27,10 @@ public class FarmCell : MonoBehaviour
         transform.SetParent(parentFarm.transform, false);
         GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
+        GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_cellState); });
         CurrentTimer = _cellState["currentProductionTimeLeft"].AsFloat / 1000;
-        StartCoroutine(TimerIenumerator());
+        _timer = StartCoroutine(TimerIenumerator());
     }
 
     private IEnumerator TimerIenumerator()

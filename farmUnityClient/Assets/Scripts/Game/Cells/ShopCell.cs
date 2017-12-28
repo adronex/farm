@@ -22,6 +22,7 @@ public class ShopCell : MonoBehaviour
 		transform.SetParent(parentShop.transform, false);
 		GetComponentInChildren<Text>().text = GetShopItemText(_cellState);
 		GetComponent<Image>().color = GetShopItemColor(_cellState, softMoney["count"].AsInt);
+		GetComponent<Button>().onClick.RemoveAllListeners();
 		GetComponent<Button>().onClick.AddListener(delegate { OnHandChosen(_cellState["item"]); });
 	}
     

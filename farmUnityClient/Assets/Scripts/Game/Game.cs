@@ -25,7 +25,9 @@ public class Game : MonoBehaviour
     {
         _api = gameObject.AddComponent<Api>();
         _scriptHolder = new MoonSharpScriptHolder();
-        InitializeCommandButtons();
+//        DestroyAll();
+        InstantiateButtons();
+        SetCommandButtons();
         _scriptHolder.SetState(new JSONObject());
         OnCommandInvoked("GET");
     }
@@ -35,15 +37,63 @@ public class Game : MonoBehaviour
     {
     }
 
-    // todo: execute scripts on client side
-//    private void DataFromScripts()
-//    {
-//        _scriptHolder = new MoonSharpScriptHolder();
-//        _scriptHolder.ExecuteCommand();
-//        var initialData = _scriptHolder.ExecuteCommand();
-//        var parsed = JSON.Parse(initialData);
-//        GameState.GetInstance().SetState(parsed);
-//    }
+    private void InstantiateButtons()
+    {
+        var tooMuchToBear = 0;
+        var gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
+        while (gameObjectsCount < _commands.Length && tooMuchToBear < 50)
+        {
+            var button = Instantiate(Button);
+            button.transform.SetParent(Commands.transform, false);
+            gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
+            tooMuchToBear++;
+            if (tooMuchToBear == 50)
+            {
+                Debug.LogError("Loop iterations limit was reached.");
+            }
+        }
+        tooMuchToBear = 0;
+        while (gameObjectsCount > _commands.Length && tooMuchToBear < 50)
+        {
+            var buttons = Commands.GetComponentsInChildren<Button>();
+            Destroy(buttons[buttons.Length - 1].gameObject);
+            gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
+            tooMuchToBear++;
+            if (tooMuchToBear == 50)
+            {
+                Debug.LogError("Loop iterations limit was reached.");
+            }
+        }
+    }
+
+    private void InstantiateGameCells(int dataCount, GridLayoutGroup parent, Image cell)
+    {
+        var tooMuchToBear = 0;
+        var gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
+        while (gameObjectsCount < dataCount && tooMuchToBear < 150)
+        {
+            var image = Instantiate(cell);
+            image.transform.SetParent(parent.transform, false);
+            gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
+            tooMuchToBear++;
+            if (tooMuchToBear == 150)
+            {
+                Debug.LogError("Loop iterations limit was reached.");
+            }
+        }
+        tooMuchToBear = 0;
+        while (gameObjectsCount > dataCount && tooMuchToBear < 150)
+        {
+            var images = parent.GetComponentsInChildren<Image>();
+            Destroy(images[images.Length - 1].gameObject);
+            gameObjectsCount = parent.GetComponentsInChildren<Image>().Length;
+            tooMuchToBear++;
+            if (tooMuchToBear == 150)
+            {
+                Debug.LogError("Loop iterations limit was reached.");
+            }
+        }
+    }
 
     private void ParseData(string data)
     {
@@ -55,73 +105,63 @@ public class Game : MonoBehaviour
 
     public void InitializeDynamicData()
     {
-        InitializeBagTable();
-        InitializeShopTable();
-        InitializeFarmTable();
+        StopAllCoroutines();
+        SetBagTable();
+        SetShopTable();
+        SetFarmTable();
     }
 
-    private void InitializeCommandButtons()
+    private void SetCommandButtons()
     {
-        foreach (Transform child in Commands.transform)
+        var buttons = Commands.GetComponentsInChildren<Button>();
+        for (var i = 0; i < _commands.Length; i++)
         {
-            Destroy(child.gameObject);
-        }
-        foreach (var command in _commands)
-        {
-            var button = Instantiate(Button);
+            var button = buttons[i];
+            var command = _commands[i];
             button.name = command;
             button.GetComponentInChildren<Text>().text = command;
-            button.transform.SetParent(Commands.transform, false);
             var currentCommand = command;
             button.onClick.AddListener(delegate { OnCommandInvoked(currentCommand); });
         }
     }
 
-    private void InitializeBagTable()
+    private void SetBagTable()
     {
-        foreach (Transform child in Bag.transform)
+        InstantiateGameCells(GameState.GetInstance().Bag.Count, Bag, BagCell);
+        var bagData = GameState.GetInstance().Bag;
+        var bagCells = Bag.GetComponentsInChildren<Image>();
+        for (var i = 0; i < bagData.Count; i++)
         {
-            Destroy(child.gameObject);
-        }
-        var bag = GameState.GetInstance().Bag;
-        for (var i = 0; i < bag.Count; i++)
-        {
-            var bagCell = Instantiate(BagCell);
-            bagCell.GetComponent<BagCell>().SetState(Bag, bag[i]);
+            bagCells[i].GetComponent<BagCell>().SetState(Bag, bagData[i]);
         }
     }
 
-    private void InitializeShopTable()
+    private void SetShopTable()
     {
-        foreach (Transform child in Shop.transform)
+        InstantiateGameCells(GameState.GetInstance().Shop.Count, Shop, ShopCell);
+        var bagData = GameState.GetInstance().Bag;
+        var softMoney = Utils.FindInJsonArray(bagData, it => it["item"]["id"] == "softMoney");
+        var shopData = GameState.GetInstance().Shop;
+        var shopCells = Shop.GetComponentsInChildren<Image>();
+        for (var i = 0; i < shopData.Count; i++)
         {
-            Destroy(child.gameObject);
-        }
-        var bag = GameState.GetInstance().Bag;
-        var shop = GameState.GetInstance().Shop;
-        var softMoney = Utils.FindInJsonArray(bag, it => it["item"]["id"] == "softMoney");
-        for (var i = 0; i < shop.Count; i++)
-        {
-            var shopCell = Instantiate(ShopCell);
-            shopCell.GetComponent<ShopCell>().SetState(Shop, shop[i], softMoney);
+            shopCells[i].GetComponent<ShopCell>().SetState(Shop, shopData[i], softMoney);
         }
     }
 
-    private void InitializeFarmTable()
+    private void SetFarmTable()
     {
-        foreach (Transform child in Farm.transform)
+        InstantiateGameCells(100, Farm, FarmCell);
+        var farmData = GameState.GetInstance().Farm;
+        var farmCells = Farm.GetComponentsInChildren<Image>();
+        for (var x = 0; x < farmData.Count; x++)
         {
-            Destroy(child.gameObject);
-        }
-        var farm = GameState.GetInstance().Farm;
-        for (var x = 0; x < farm.Count; x++)
-        {
-            for (var y = 0; y < farm[x].Count; y++)
+            for (var y = 0; y < farmData[x].Count; y++)
             {
-                farm[x][y]["x"] = x;
-                farm[x][y]["y"] = y;
-                var farmCell = Instantiate(FarmCell);
-                farmCell.GetComponent<FarmCell>().SetState(Farm, farm[x][y]);
+                farmData[x][y]["x"] = x;
+                farmData[x][y]["y"] = y;
+                var cellIndex = x * farmData.Count + y;
+                farmCells[cellIndex].GetComponent<FarmCell>().SetState(Farm, farmData[x][y]);
             }
         }
     }

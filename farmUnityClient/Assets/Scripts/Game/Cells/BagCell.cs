@@ -22,6 +22,7 @@ public class BagCell : MonoBehaviour
 		transform.SetParent(parentBag.transform, false);
 		GetComponentInChildren<Text>().text = GetBagItemText(_cellState);
 		GetComponent<Image>().color = GetBagItemColor(_cellState);
+		GetComponent<Button>().onClick.RemoveAllListeners();
 		GetComponent<Button>().onClick.AddListener(delegate { OnHandChosen(_cellState["item"]); });
 	}
 	
