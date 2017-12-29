@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.interpreters.InterpreterCaller;
-import com.company.interpreters.JavaScriptInterpreterCaller;
 import com.company.interpreters.LuaInterpreterCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,6 @@ public class RequestHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
 	private InterpreterCaller interpreterCaller = new LuaInterpreterCaller();
 	private Map<String, String> usersSessions = new HashMap<>();
-
-	public RequestHandler() throws ScriptException {
-	}
 
 	public synchronized String handleRequest(Request request, Response response) {
 		try {

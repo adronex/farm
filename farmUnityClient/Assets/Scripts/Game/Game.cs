@@ -6,9 +6,11 @@ public class Game : MonoBehaviour
 {
     private Api _api;
     private IScriptHolder _scriptHolder;
-    private readonly string[] _commands = {"GET", "BUY", "SELL", "APPLY"};
+    private readonly string[] _commands = {"GET"};
+    private readonly string[] _movements = {"UP", "DOWN", "LEFT", "RIGHT"};
 
     public GridLayoutGroup Commands;
+    public GridLayoutGroup Movements;
     public GridLayoutGroup Bag;
     public GridLayoutGroup Shop;
     public GridLayoutGroup Farm;
@@ -25,45 +27,14 @@ public class Game : MonoBehaviour
     {
         _api = gameObject.AddComponent<Api>();
         _scriptHolder = new MoonSharpScriptHolder();
-//        DestroyAll();
-        InstantiateButtons();
         SetCommandButtons();
         _scriptHolder.SetState(new JSONObject());
-        OnCommandInvoked("GET");
+        OnHandTargetCommandInvoked("GET");
     }
 
     // Update is called once per frame
     void Update()
     {
-    }
-
-    private void InstantiateButtons()
-    {
-        var tooMuchToBear = 0;
-        var gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
-        while (gameObjectsCount > _commands.Length && tooMuchToBear < 50)
-        {
-            var buttons = Commands.GetComponentsInChildren<Button>();
-            Destroy(buttons[gameObjectsCount - 1].gameObject);
-            gameObjectsCount--;
-            tooMuchToBear++;
-            if (tooMuchToBear == 50)
-            {
-                Debug.LogError("Loop iterations limit was reached.");
-            }
-        }
-        tooMuchToBear = 0;
-        while (gameObjectsCount < _commands.Length && tooMuchToBear < 50)
-        {
-            var button = Instantiate(Button);
-            button.transform.SetParent(Commands.transform, false);
-            gameObjectsCount = Commands.GetComponentsInChildren<Button>().Length;
-            tooMuchToBear++;
-            if (tooMuchToBear == 50)
-            {
-                Debug.LogError("Loop iterations limit was reached.");
-            }
-        }
     }
 
     private void InstantiateGameCells(int dataCount, GridLayoutGroup parent, Image cell)
@@ -101,6 +72,8 @@ public class Game : MonoBehaviour
         GameState.GetInstance().SetState(parsed);
         _scriptHolder.SetState(parsed.AsObject);
         InitializeDynamicData();
+        Debug.Log(parsed["workers"][0]["position"]);
+        Debug.Log(parsed["workers"][0]["hand"]);
     }
 
     public void InitializeDynamicData()
@@ -113,15 +86,25 @@ public class Game : MonoBehaviour
 
     private void SetCommandButtons()
     {
-        var buttons = Commands.GetComponentsInChildren<Button>();
+        var commandButtons = Commands.GetComponentsInChildren<Button>();
         for (var i = 0; i < _commands.Length; i++)
         {
-            var button = buttons[i];
+            var button = commandButtons[i];
             var command = _commands[i];
             button.name = command;
             button.GetComponentInChildren<Text>().text = command;
             var currentCommand = command;
-            button.onClick.AddListener(delegate { OnCommandInvoked(currentCommand); });
+            button.onClick.AddListener(delegate { OnHandTargetCommandInvoked(currentCommand); });
+        }
+        var movementButtons = Movements.GetComponentsInChildren<Button>();
+        for (var i = 0; i < _movements.Length; i++)
+        {
+            var button = movementButtons[i];
+            var movement = _movements[i];
+            button.name = movement;
+            button.GetComponentInChildren<Text>().text = movement;
+            var currentCommand = movement;
+            button.onClick.AddListener(delegate { OnDirectionCommandInvoked(currentCommand); });
         }
     }
 
@@ -176,7 +159,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void OnCommandInvoked(string command)
+    private void OnHandTargetCommandInvoked(string command)
     {  
         var commandJsonObject = new JSONObject();
         commandJsonObject["command"] = command;
@@ -184,6 +167,24 @@ public class Game : MonoBehaviour
         commandJsonObject["target"] = GameState.GetInstance().Target;
         _executedCommands.Add(commandJsonObject);
         var synchNeeded = command == "GET" || _executedCommands.Count >= CommandsToSynchronize;
+        if (!synchNeeded)
+        {
+            CallClientSideApi(commandJsonObject);        
+        }
+        else
+        { 
+            CallRestApi();
+        }
+    }
+
+    private void OnDirectionCommandInvoked(string direction)
+    {  
+        var commandJsonObject = new JSONObject();
+        commandJsonObject["command"] = "MOVE";
+        commandJsonObject["direction"] = direction;
+        commandJsonObject["workerId"] = "Uasya";
+        _executedCommands.Add(commandJsonObject);
+        var synchNeeded = _executedCommands.Count >= CommandsToSynchronize;
         if (!synchNeeded)
         {
             CallClientSideApi(commandJsonObject);        

@@ -4,22 +4,22 @@ function Shop()
             item = staticData.getItems().well,
             buyPrice = 0,
             sellPrice = 0
-        },
-        {
-            item = staticData.getItems().wateringCan,
-            buyPrice = 0,
-            sellPrice = 0
-        },
-        {
-            item = staticData.getItems().wheat,
-            buyPrice = 3,
-            sellPrice = 1
-        },
-        {
-            item = staticData.getItems().carrot,
-            buyPrice = 15,
-            sellPrice = 3
         }
+--        {
+--            item = staticData.getItems().wateringCan,
+--            buyPrice = 0,
+--            sellPrice = 0
+--        },
+--        {
+--            item = staticData.getItems().wheat,
+--            buyPrice = 3,
+--            sellPrice = 1
+--        },
+--        {
+--            item = staticData.getItems().carrot,
+--            buyPrice = 15,
+--            sellPrice = 3
+--        }
     }
     local findShopItem = function(itemId)
         return utils.findInArray(shopItems, function(it)
