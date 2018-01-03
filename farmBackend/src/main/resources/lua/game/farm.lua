@@ -15,6 +15,7 @@ function Farm(exportData)
         end
         farmCells[1][3] = staticData.getItems().carrotSpawnBox;
         farmCells[2][3] = staticData.getItems().road;
+        farmCells[2][4] = staticData.getItems().caravanParkingPlace;
         farmCells[3][3] = staticData.getItems().road;
         farmCells[4][3] = staticData.getItems().road;
         farmCells[5][3] = staticData.getItems().road;

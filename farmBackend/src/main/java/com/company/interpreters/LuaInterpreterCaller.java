@@ -1,8 +1,11 @@
 package com.company.interpreters;
 
 import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
+
+import javax.script.ScriptException;
 
 public class LuaInterpreterCaller implements InterpreterCaller {
 
@@ -18,6 +21,7 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		globals.get("dofile").call("lua/game/items/field.lua");
 		globals.get("dofile").call("lua/game/items/seed.lua");
 		globals.get("dofile").call("lua/game/items/stand.lua");
+		globals.get("dofile").call("lua/game/items/caravan.lua");
 
 		globals.get("dofile").call("lua/game/staticData.lua");
 		globals.get("dofile").call("lua/game/bag.lua");
@@ -38,7 +42,11 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 	}
 
 	@Override
-	public String executeCommand(String requestBody) {
-		return executeCommandFunction.call(LuaValue.valueOf(requestBody)).tojstring();
+	public String executeCommand(String requestBody) throws ScriptException {
+		try {
+			return executeCommandFunction.call(LuaValue.valueOf(requestBody)).tojstring();
+		} catch (LuaError e) {
+			throw new ScriptException(e);
+		}
 	}
 }

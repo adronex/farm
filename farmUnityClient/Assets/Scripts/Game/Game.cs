@@ -163,6 +163,7 @@ public class Game : MonoBehaviour
     {  
         var commandJsonObject = new JSONObject();
         commandJsonObject["command"] = command;
+        commandJsonObject["timestamp"] = Utils.RandomSeed();
         commandJsonObject["hand"] = GameState.GetInstance().Hand;
         commandJsonObject["target"] = GameState.GetInstance().Target;
         _executedCommands.Add(commandJsonObject);
@@ -181,6 +182,7 @@ public class Game : MonoBehaviour
     {  
         var commandJsonObject = new JSONObject();
         commandJsonObject["command"] = "MOVE";
+        commandJsonObject["timestamp"] = Utils.RandomSeed();
         commandJsonObject["direction"] = direction;
         commandJsonObject["workerId"] = "Uasya";
         _executedCommands.Add(commandJsonObject);

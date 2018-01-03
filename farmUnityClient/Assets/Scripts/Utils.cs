@@ -21,4 +21,9 @@ public class Utils
         return DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks /
                TimeSpan.TicksPerMillisecond;
     }
+
+    public static long RandomSeed()
+    {
+        return Now() % int.MaxValue;
+    }
 }

@@ -4,3 +4,5 @@ function Property()
     local workers = {}
 
 end
+
+math.randomseed(1234)

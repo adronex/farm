@@ -45,6 +45,7 @@ public class FarmCell : MonoBehaviour
             yield return null;
         }
         CurrentTimer = 0;
+        _cellState["currentProductionTimeLeft"] = 0;
         GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
     }
@@ -54,11 +55,11 @@ public class FarmCell : MonoBehaviour
         var selected = farmCell["x"] == GameState.GetInstance().Target["x"] &&
                        farmCell["y"] == GameState.GetInstance().Target["y"];
         var alpha = selected ? 0.6f : 1f;
-        if (farmCell["queue"] == null)
+        if (farmCell["plant"] == null)
         {
             return new Color(0.86f, 0.86f, 0.86f, alpha);
         }
-        if (farmCell["queue"][0] == null)
+        if (farmCell["plant"]["id"] == null)
         {
             return new Color(0.44f, 0.64f, 1f, alpha);
         }

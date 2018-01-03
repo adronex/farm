@@ -48,6 +48,8 @@ function commandHandler(requestString)
             if not w then error ("Worker with id "..json.stringify(requestObject.workerId).." not found") end
             if not requestObject.direction then error ("Direction is not defined") end
             w:move(requestObject.direction)
+        else
+            error ("Unreckognized request object: "..json.stringify(requestObject))
         end
     end
 
