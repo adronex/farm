@@ -44,11 +44,11 @@ function Caravan(initializer)
         return true
     end
 
-    it.use = function(worker, target)
+    it.use = function(farm, worker, target)
         if not worker.hand or worker.hand.id ~= "basket" then
             error ("Invalid worker hand: "..json.stringify(worker.hand))
         end
-        local caravan = farm.getOriginalFarmCells()[target.row][target.col].caravan
+        local caravan = farm.cells[target.row][target.col].caravan
         local removeIndexes = {}
         for basketItemIndex, basketItem in pairs(worker.hand.objects) do
             for _, order in pairs(caravan.orders) do
@@ -61,6 +61,7 @@ function Caravan(initializer)
         for _, removeIndex in pairs(removeIndexes) do
             table.remove(worker.hand.objects, removeIndex)
         end
+        return { farm = farm, worker = worker }
     end
 
     return it

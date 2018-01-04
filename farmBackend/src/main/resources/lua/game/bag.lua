@@ -8,18 +8,6 @@ function Bag(exportData)
                 item = staticData.getItems().softMoney,
                 count = 20
             }
---            {
---                item = staticData.getItems().wheat,
---                count = 2
---            },
---            {
---                item = staticData.getItems().wateringCan,
---                count = 1
---            },
---            {
---                item = staticData.getItems().sickle,
---                count = 1
---            }
         }
     end
 

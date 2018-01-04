@@ -22,12 +22,13 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		globals.get("dofile").call("lua/game/items/seed.lua");
 		globals.get("dofile").call("lua/game/items/stand.lua");
 		globals.get("dofile").call("lua/game/items/caravan.lua");
-
 		globals.get("dofile").call("lua/game/staticData.lua");
+
+		globals.get("dofile").call("lua/game/service/workerService.lua");
+		globals.get("dofile").call("lua/game/service/farmService.lua");
+
 		globals.get("dofile").call("lua/game/bag.lua");
-		globals.get("dofile").call("lua/game/farm.lua");
-		globals.get("dofile").call("lua/game/shop.lua");
-		globals.get("dofile").call("lua/game/worker.lua");
+//		globals.get("dofile").call("lua/game/shop.lua");
 		globals.get("dofile").call("lua/game/api.lua");
 		setStateFunction = globals.get("setState");
 		executeCommandFunction = globals.get("commandHandler");

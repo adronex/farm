@@ -4,7 +4,7 @@ function Field(initializer)
    -- it.queue = {}
     it.plant = {}
     local sow = function(worker, target)
-        local field = farm.getOriginalFarmCells()[target.row][target.col]
+        local field = farm.cells[target.row][target.col]
         if field.plant.id then
             error("Already sowed with " .. json.stringify(field.plant))
         end
@@ -13,7 +13,7 @@ function Field(initializer)
         worker.hand = {}
     end
     local collect = function(worker, target)
-        local field = farm.getOriginalFarmCells()[target.row][target.col]
+        local field = farm.cells[target.row][target.col]
         if not field.plant then
             error("Field is not sowed")
         end
@@ -28,7 +28,7 @@ function Field(initializer)
             table.insert(worker.hand.objects, staticData.getItems()[collected.fruitId])
         end
     end
-    it.use = function(worker, target)
+    it.use = function(farm, worker, target)
         if worker.hand.type == 'seed' then
             sow(worker, target)
         elseif worker.hand.id == 'basket' then
@@ -36,6 +36,7 @@ function Field(initializer)
         else
             error ("Cant apply this hand to field: "..json.stringify(worker.hand))
         end
+        return { farm = farm, worker = worker }
     end
     return it
 end

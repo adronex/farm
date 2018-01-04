@@ -2,7 +2,7 @@ local commands = {
     get = "GET",
     buy = "BUY",
     sell = "SELL",
-    apply = "APPLY",
+--    apply = "APPLY",
     assign = "ASSIGN",
     move = "MOVE"
 };
@@ -10,8 +10,10 @@ local commands = {
 function setState(dataString)
     local data = json.parse(dataString)
     bag = Bag(data.bag)
-    farm = Farm(data.farm)
-    shop = Shop()
+    if data.farm then
+        farm = farmService.exportFarm(data.farm)
+    end
+--    shop = Shop()
 end
 
 function getDataAsString()
@@ -20,8 +22,8 @@ function getDataAsString()
         staticData = staticData.getItems(),
         workers = workers,
         bag = bag.getCopyOfAllItems(),
-        farm = farm.getOriginalFarmCells(),
-        shop = shop.getCopyOfAllItems()
+        farm = farm.cells,
+--        shop = shop.getCopyOfAllItems()
     })
 end
 
@@ -47,7 +49,9 @@ function commandHandler(requestString)
             local w = utils.findInArray(workers, function(it) return it.id == requestObject.workerId end)
             if not w then error ("Worker with id "..json.stringify(requestObject.workerId).." not found") end
             if not requestObject.direction then error ("Direction is not defined") end
-            w:move(requestObject.direction)
+            local response = workerService.moveWorker(w, farm, requestObject.direction)
+            farm = response.farm
+            w = response.worker
         else
             error ("Unreckognized request object: "..json.stringify(requestObject))
         end

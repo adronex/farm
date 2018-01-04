@@ -3,8 +3,8 @@ function Stand(initializer)
     local it = Item(initializer)
     it.toolToHoldId = initializer.toolToHoldId
     it.currentToolId = initializer.toolToHoldId
-    it.use = function(worker, target)
-        local stand = farm.getOriginalFarmCells()[target.row][target.col]
+    it.use = function(farm, worker, target)
+        local stand = farm.cells[target.row][target.col]
         if worker.hand.id and not stand.currentToolId then
             if worker.hand.id ~= stand.toolToHoldId then
                 error ("Stand can hold only "..stand.toolTypeTo..", but worker is trying to put "..json.stringify(worker.hand))
@@ -18,6 +18,7 @@ function Stand(initializer)
         else
             error ("Worker hand shold be empty and stand should contain object. Actual state is: hand - "..json.stringify(worker.hand)..", stand - "..json.stringify(stand))
         end
+        return { farm = farm, worker = worker }
     end
     return it
 end

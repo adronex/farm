@@ -4,7 +4,7 @@ function Item(initializer)
     end
     local id = initializer.id
     local type = initializer.type
-    local use = function(worker, target)
+    local use = function(farm, worker, target)
         error("'use' function isn't implemented for item '" .. id .. "' of type '" .. type .."'")
     end
     if initializer.use then

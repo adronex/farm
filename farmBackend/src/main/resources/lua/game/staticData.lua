@@ -75,9 +75,10 @@ function StaticData()
     items.road = Item({
         id = "road",
         type = itemTypes.road,
-        use = function(worker, target)
+        use = function(farm, worker, target)
             worker.position.row = target.row
             worker.position.col = target.col
+            return { farm = farm, worker = worker }
         end
     })
     items.field = Field({
@@ -91,14 +92,16 @@ function StaticData()
         id = "carrotSpawnBox",
         type = itemTypes.spawnBox,
         buyPrice = 3,
-        use = function(worker, target)
+        use = function(farm, worker, target)
             if worker.hand.id then
                 error ("Worker's hand must be empty, but it has "..worker.hand.id)
             end
             local carrot = staticData.getItems().carrotSeed;
             --todo: buyPrice
+            --todo: bagService
             bag.decreaseCount(staticData.getItems().softMoney.id, 3)
             worker.hand = carrot
+            return { farm = farm, worker = worker }
         end
     })
     local caravanInitializer = {
@@ -121,18 +124,19 @@ function StaticData()
     items.caravanParkingPlace = Item({
         id = "caravanParkingPlace",
         type = itemTypes.caravanParkingPlace,
-        use = function(worker, target)
-            local parkingPlace = farm.getOriginalFarmCells()[target.row][target.col]
+        use = function(farm, worker, target)
+            local parkingPlace = farm.cells[target.row][target.col]
             if not parkingPlace.caravan then
                 error ("Parking place is empty")
             end
-            caravanToBeRemoved.use(worker, target)
+            farm = caravanToBeRemoved.use(farm, worker, target)
             if caravanToBeRemoved.isReady(parkingPlace.caravan) then
                 for _, reward in pairs(parkingPlace.caravan.rewards) do
                     bag.increaseCount(reward.itemId, reward.count)
                 end
                 parkingPlace.caravan = Caravan(caravanInitializer)
             end
+            return { farm = farm, worker = worker }
         end
     })
     items.caravanParkingPlace.caravan = Caravan(caravanInitializer)

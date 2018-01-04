@@ -39,7 +39,7 @@ public class HttpRequestHandler
 
         if (uwr.isNetworkError || uwr.isHttpError)
         {
-            errorCallback(uwr.error);
+            errorCallback(uwr.downloadHandler.text);
         }
         else
         {
