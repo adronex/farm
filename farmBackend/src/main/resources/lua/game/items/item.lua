@@ -1,3 +1,55 @@
+inventoryObjects = {
+    currencies = {
+        type = "currency",
+        items = {
+            softMoney = "softMoney"
+        }
+    }
+}
+
+pickableObjects = {
+    tools = {
+        type = "tool",
+        items = {
+            wateringCan = "wateringCan",
+            basket = "basket"
+        }
+    },
+    seeds = {
+        type = "seed",
+        items = {
+            carrot = "carrot"
+        }
+    },
+    fruits = {
+        type = "fruit",
+        items = {
+            carrot = "carrot"
+        }
+    }
+}
+
+groundObjects = {
+    foundations = {
+        type = "foundation",
+        items = {
+            ground = "ground"
+        }
+    },
+    fields = {
+        type = "field",
+        item = {
+            field = "field"
+        }
+    },
+    stands = {
+        type = "stand",
+        items = {
+            basketStand = "basketStand"
+        }
+    }
+}
+
 function Item(initializer)
     if not initializer.id or not initializer.type then
         error("Id and type parameters are mandatory")

@@ -19,7 +19,11 @@ end
 function getDataAsString()
 
     return json.stringify({
-        staticData = staticData.getItems(),
+        staticData = {
+            inventoryObjects = inventoryObjects,
+            pickableObjects = pickableObjects,
+            groundObjects = groundObjects
+        },
         workers = workers,
         bag = bag.getCopyOfAllItems(),
         farm = farm.cells,

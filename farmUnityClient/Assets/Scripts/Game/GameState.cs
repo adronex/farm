@@ -7,6 +7,7 @@ public class GameState
     private JSONArray _staticData;
     private JSONArray _bag;
     private JSONArray _farm;
+    private JSONArray _workers;
     private JSONArray _shop;
     
     public JSONNode Hand = new JSONObject();
@@ -23,6 +24,7 @@ public class GameState
         _bag = state["bag"].AsArray;
         _farm = state["farm"].AsArray;
         _shop = state["shop"].AsArray;
+        _workers = state["workers"].AsArray;
     }
 
     public override string ToString()
@@ -32,6 +34,7 @@ public class GameState
         jsonObject["bag"] = _bag;
         jsonObject["farm"] = _farm;
         jsonObject["shop"] = _shop;
+        jsonObject["workers"] = _workers;
         return jsonObject.ToString();
     }
 
@@ -53,5 +56,10 @@ public class GameState
     public JSONArray Shop
     {
         get { return _shop; }
+    }
+
+    public JSONArray Workers
+    {
+        get { return _workers; }
     }
 }

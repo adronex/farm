@@ -6,24 +6,26 @@ local createFarm = function()
     for row = 1, height, 1 do
         cells[row] = {}
         for col = 1, width, 1 do
-            cells[row][col] = staticData.getItems().ground
+            cells[row][col] = {
+                id = groundObjects.foundations.items.ground,
+                type = groundObjects.foundations.type
+            }
         end
     end
     --todo: static data rework
-    cells[1][3] = staticData.getItems().carrotSpawnBox;
-    cells[2][3] = staticData.getItems().road;
-    cells[2][4] = staticData.getItems().caravanParkingPlace;
-    cells[3][3] = staticData.getItems().road;
-    cells[4][3] = staticData.getItems().road;
-    cells[5][3] = staticData.getItems().road;
-    cells[6][3] = staticData.getItems().road;
-    cells[7][3] = staticData.getItems().road;
-    cells[2][2] = staticData.getItems().field;
-    cells[3][2] = staticData.getItems().field;
-    cells[4][2] = staticData.getItems().field;
-    cells[5][2] = staticData.getItems().field;
-    cells[5][4] = staticData.getItems().basketStand;
-    cells[5][5] = staticData.getItems().well;
+    cells[1][3] = staticData.getItems().carrotSpawnBox
+    cells[2][3] = staticData.getItems().road
+    cells[2][4] = staticData.getItems().caravanParkingPlace
+    cells[3][3] = staticData.getItems().road
+    cells[4][3] = staticData.getItems().road
+    cells[5][3] = staticData.getItems().road
+    cells[6][3] = staticData.getItems().road
+    cells[7][3] = staticData.getItems().road
+    cells[2][2] = staticData.getItems().field
+    cells[3][2] = staticData.getItems().field
+    cells[4][2] = staticData.getItems().field
+    cells[5][2] = staticData.getItems().field
+    cells[5][4] = staticData.getItems().basketStand
 
     return {
         width = width,

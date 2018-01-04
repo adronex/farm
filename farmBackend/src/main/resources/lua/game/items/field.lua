@@ -25,13 +25,18 @@ function Field(initializer)
         field.currentProductionTimeLeft = nil
         field.plant = {}
         for i = 1, collected.fruitsCount, 1 do
+            if not worker.hand.objects then
+                worker.hand.objects = {}
+            end
             table.insert(worker.hand.objects, staticData.getItems()[collected.fruitId])
         end
     end
     it.use = function(farm, worker, target)
         if worker.hand.type == 'seed' then
+            --todo: rework from global to functional style
             sow(worker, target)
-        elseif worker.hand.id == 'basket' then
+        elseif worker.hand.id == pickableObjects.tools.items.basket then
+            --todo: rework from global to functional style
             collect(worker, target)
         else
             error ("Cant apply this hand to field: "..json.stringify(worker.hand))

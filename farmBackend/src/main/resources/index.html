@@ -151,6 +151,12 @@
 
                 game.getItemStyle = function (item) {
                     var style = 'bag item ';
+                    if (!game.hand) {
+                        game.hand = {}
+                    }
+                    if (!item) {
+                        item = {}
+                    }
                     if (game.hand.id === item.id) {
                         style += ' chosen';
                     }
@@ -279,21 +285,21 @@
 <div ng-controller="GameController as game"
      class="game">
 
-    <div ng-show="game.items"
-         class="bag">Items:
-        <div>
-            <div ng-repeat="item in game.items track by $index"
-                 ng-class="game.getItemStyle(item)"
-                 ng-click="game.onItemClick(item)">
-                <div>{{item.id}}</div>
-                <div ng-show="item.purchasable">
-                    <div>buy/sell:</div>
-                    <div>{{item.buyPrice}} / {{item.sellPrice}}</div>
-                </div>
-                <div ng-show="item.count !== undefined">count: {{item.count}}</div>
-            </div>
-        </div>
-    </div>
+    <!--<div ng-show="game.items"-->
+         <!--class="bag">Items:-->
+        <!--<div>-->
+            <!--<div ng-repeat="item in game.items track by $index"-->
+                 <!--ng-class="game.getItemStyle(item)"-->
+                 <!--ng-click="game.onItemClick(item)">-->
+                <!--<div>{{item.id}}</div>-->
+                <!--<div ng-show="item.purchasable">-->
+                    <!--<div>buy/sell:</div>-->
+                    <!--<div>{{item.buyPrice}} / {{item.sellPrice}}</div>-->
+                <!--</div>-->
+                <!--<div ng-show="item.count !== undefined">count: {{item.count}}</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <button ng-repeat="command in game.commands"
             ng-click="game.execute(command)">{{command}}

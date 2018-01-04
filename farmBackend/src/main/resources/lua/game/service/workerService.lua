@@ -14,8 +14,8 @@ local createWorker = function()
 end
 
 local assignWorker = function(worker, farm, position)
-    if position.row < 1 or position.row > farm.width
-            or position.col < 1 or position.col > farm.height then
+    if position.row < 1 or position.row > farm.height
+            or position.col < 1 or position.col > farm.width then
         error("Trying to assing worker out of farm bounds, position: " .. json.stringify(position))
     end
     --todo: static data check/rework
@@ -43,14 +43,14 @@ local moveWorker = function (worker, farm, direction)
         error("Unknown direction: " .. direction);
     end
 
-    if newRow < 1 or newRow > farm.width
-            or newCol < 1 or newCol > farm.height then
+    if newRow < 1 or newRow > farm.height
+            or newCol < 1 or newCol > farm.width then
         error("Trying to move out of farm bounds, row: " .. newRow .. ", col: " .. newCol)
     end
 
-    farmService.applyWorkerToCell(farm, worker, {row = newRow, col = newCol})
+    local response = farmService.applyWorkerToCell(farm, worker, {row = newRow, col = newCol})
 
-    return { farm = farm, worker = worker }
+    return { farm = response.farm, worker = response.worker }
 end
 
 workerService = {}

@@ -12,7 +12,10 @@ function Stand(initializer)
             stand.toolToHoldId = worker.hand.id
             worker.hand = {}
         elseif not worker.hand.id and stand.currentToolId then
-            local tool = staticData.getItems()[stand.currentToolId]
+            local tool = {
+                id = pickableObjects.tools.items[stand.currentToolId],
+                type = pickableObjects.tools.type
+            }
             worker.hand = tool
             stand.currentToolId = nil
         else

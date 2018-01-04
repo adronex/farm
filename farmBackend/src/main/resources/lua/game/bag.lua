@@ -5,39 +5,27 @@ function Bag(exportData)
     else
         bagItems = {
             {
-                item = staticData.getItems().softMoney,
+                id = inventoryObjects.currencies.items.softMoney,
+                type = inventoryObjects.currencies.type,
                 count = 20
             }
         }
     end
 
-    local getOrCreate = function(itemId)
-        local found = utils.findInArray(bagItems, function(it) return it.item.id == itemId end)
-
-        if found then return found
-        else found = staticData.getItems()[itemId]
-        end
-
-        if not found then
-            error ("No item with id '"..itemId.."' have been found in application")
-        end
-
-        local newBagItem = {item = found, count = 0 }
-        table.insert(bagItems, newBagItem)
-        return newBagItem
-    end
-
     local decreaseCount = function(itemId, count)
-        local found = getOrCreate(itemId);
+        local found = utils.findInArray(bagItems, function(it) return it.id == itemId end)
+        if not found then
+            error ("No item with id '"..itemId.."' have been found in inventory")
+        end
         if found.count < count then
             error ("Not enough '"..itemId.."', need: "..count..", available: "..found.count)
         end
-        found.count = found.count - count;
+        found.count = found.count - count
     end
 
     local increaseCount = function(itemId, count)
-        local bagItem = getOrCreate(itemId)
-        bagItem.count = bagItem.count + count;
+        local bagItem = utils.findInArray(bagItems, function(it) return it.id == itemId end)
+        bagItem.count = bagItem.count + count
     end
 
     local getCopyOfAllItems = function()
@@ -45,7 +33,6 @@ function Bag(exportData)
     end
 
     return {
-        getOrCreate = getOrCreate,
         decreaseCount = decreaseCount,
         increaseCount = increaseCount,
         getCopyOfAllItems = getCopyOfAllItems

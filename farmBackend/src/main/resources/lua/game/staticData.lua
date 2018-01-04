@@ -1,6 +1,5 @@
 function StaticData()
     local itemTypes = {
-        currency = "currency",
         foundation = "foundation",
         caravanParkingPlace = "caravanParkingPlace",
         road = "road",
@@ -14,19 +13,15 @@ function StaticData()
 
     local items = {}
 
-    items.softMoney = Item({
-        id = "softMoney",
-        type = itemTypes.currency
-    })
-    items.wateringCan = Item({
-        id = "wateringCan",
-        type = itemTypes.tool
-    })
-    items.basket = Item({
-        id = "basket",
-        type = itemTypes.tool
-    })
-    items.basket.objects = {}
+--    items.wateringCan = Item({
+--        id = "wateringCan",
+--        type = itemTypes.tool
+--    })
+--    items.basket = Item({
+--        id = "basket",
+--        type = itemTypes.tool
+--    })
+--    items.basket.objects = {}
     items.basketStand = Stand({
         id = "basketStand",
         type = itemTypes.stand,
@@ -68,10 +63,10 @@ function StaticData()
         fruitsCount = 3,
         fruitId = "carrot"
     })
-    items.ground = Item({
-        id = "ground",
-        type = itemTypes.foundation
-    })
+--    items.ground = Item({
+--        id = "ground",
+--        type = itemTypes.foundation
+--    })
     items.road = Item({
         id = "road",
         type = itemTypes.road,
@@ -84,14 +79,13 @@ function StaticData()
     items.field = Field({
         id = "field"
     })
-    items.well = Item({
-        id = "well",
-        type = itemTypes.foundation
-    })
+--    items.well = Item({
+--        id = "well",
+--        type = itemTypes.foundation
+--    })
     items.carrotSpawnBox = Item({
         id = "carrotSpawnBox",
         type = itemTypes.spawnBox,
-        buyPrice = 3,
         use = function(farm, worker, target)
             if worker.hand.id then
                 error ("Worker's hand must be empty, but it has "..worker.hand.id)
@@ -99,11 +93,13 @@ function StaticData()
             local carrot = staticData.getItems().carrotSeed;
             --todo: buyPrice
             --todo: bagService
-            bag.decreaseCount(staticData.getItems().softMoney.id, 3)
+            bag.decreaseCount(inventoryObjects.currencies.items.softMoney, 3)
             worker.hand = carrot
             return { farm = farm, worker = worker }
         end
     })
+    items.carrotSpawnBox.spawnObjectId = pickableObjects.seeds.items.carrot;
+    items.carrotSpawnBox.buyPrice = 3;
     local caravanInitializer = {
         id = "caravan",
         orders = {
@@ -115,7 +111,7 @@ function StaticData()
         },
         rewards = {
             {
-                itemId = "softMoney",
+                itemId = inventoryObjects.currencies.items.softMoney,
                 count = 10
             }
         }

@@ -1,3 +1,4 @@
+-- DEPRECATED
 function Shop()
     local shopItems = {
         {

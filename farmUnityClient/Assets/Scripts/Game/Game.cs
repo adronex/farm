@@ -10,7 +10,7 @@ public class Game : MonoBehaviour
     private readonly string[] _movements = {"UP", "DOWN", "LEFT", "RIGHT"};
 
     public GridLayoutGroup Commands;
-    public GridLayoutGroup Movements;
+    public GameObject Movements;
     public GridLayoutGroup Bag;
     public GridLayoutGroup Shop;
     public GridLayoutGroup Farm;
@@ -82,6 +82,7 @@ public class Game : MonoBehaviour
         SetBagTable();
         SetShopTable();
         SetFarmTable();
+        SetWorkers();
     }
 
     private void SetCommandButtons()
@@ -159,6 +160,23 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void SetWorkers()
+    {
+        var workersData = GameState.GetInstance().Workers;
+        var farmData = GameState.GetInstance().Farm;
+        var farmCells = Farm.GetComponentsInChildren<Image>();
+        for (var i = 0; i < workersData.Count; i++)
+        {
+            if (workersData[i]["position"]["col"] && workersData[i]["position"]["row"])
+            {
+                var x = workersData[i]["position"]["row"].AsInt - 1; // lua arrays start from 1
+                var y = workersData[i]["position"]["col"].AsInt - 1; // lua arrays start from 1
+                var cellIndex = x * farmData[x].Count + y;
+                farmCells[cellIndex].color = Color.green;
+            }
+        }
+    }
+
     private void OnHandTargetCommandInvoked(string command)
     {  
         var commandJsonObject = new JSONObject();
@@ -209,7 +227,11 @@ public class Game : MonoBehaviour
     {
         _api.ExecuteCommand(
             _executedCommands,
-            ParseData,
+            response =>
+            {
+                ParseData(response);
+                Debug.Log(response);
+            },
             Debug.LogError
         );
         _executedCommands = new JSONArray();

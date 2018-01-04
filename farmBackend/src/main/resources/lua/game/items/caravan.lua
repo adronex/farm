@@ -45,7 +45,7 @@ function Caravan(initializer)
     end
 
     it.use = function(farm, worker, target)
-        if not worker.hand or worker.hand.id ~= "basket" then
+        if not worker.hand or worker.hand.id ~= pickableObjects.tools.items.basket then
             error ("Invalid worker hand: "..json.stringify(worker.hand))
         end
         local caravan = farm.cells[target.row][target.col].caravan
