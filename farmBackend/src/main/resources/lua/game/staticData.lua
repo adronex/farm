@@ -18,6 +18,11 @@ function StaticData()
         type = itemTypes.stand,
         toolToHoldId = "basket"
     })
+    items.shovelStand = Stand({
+        id = "shovelStand",
+        type = itemTypes.stand,
+        toolToHoldId = "shovel"
+    })
     items.carrot = Item({
         id = "carrot",
         type = itemTypes.fruit
@@ -28,10 +33,6 @@ function StaticData()
         fruitsCount = 3,
         fruitId = "carrot"
     })
---    items.ground = Item({
---        id = "ground",
---        type = itemTypes.foundation
---    })
     items.road = Item({
         id = "road",
         type = itemTypes.road,

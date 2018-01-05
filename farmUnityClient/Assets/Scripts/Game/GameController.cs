@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Game : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     private Api _api;
     private IScriptHolder _scriptHolder;

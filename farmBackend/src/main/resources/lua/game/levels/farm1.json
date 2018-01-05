@@ -1,0 +1,205 @@
+{
+  "height": 7,
+  "width": 5,
+  "cells": [
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "type": "spawnBox",
+        "buyPrice": 3,
+        "id": "carrotSpawnBox",
+        "spawnObjectId": "carrot",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "state": "unplowed",
+        "type": "field",
+        "plant": {},
+        "id": "field",
+        "use": null
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "caravanParkingPlace",
+        "type": "caravanParkingPlace",
+        "use": null,
+        "caravan": {
+          "type": "caravan",
+          "id": "caravan",
+          "isReady": null,
+          "rewards": [
+            {
+              "count": 10,
+              "itemId": "softMoney"
+            }
+          ],
+          "orders": [
+            {
+              "requiredCount": 8,
+              "itemId": "carrot",
+              "currentCount": 0
+            }
+          ],
+          "use": null
+        }
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "state": "unplowed",
+        "type": "field",
+        "plant": {},
+        "id": "field",
+        "use": null
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "state": "unplowed",
+        "type": "field",
+        "plant": {},
+        "id": "field",
+        "use": null
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "shovelStand",
+        "type": "stand",
+        "toolToHoldId": "shovel",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "state": "unplowed",
+        "type": "field",
+        "plant": {},
+        "id": "field",
+        "use": null
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "basketStand",
+        "type": "stand",
+        "toolToHoldId": "basket",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "road",
+        "type": "road",
+        "use": null
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      },
+      {
+        "id": "ground",
+        "type": "foundation"
+      }
+    ]
+  ]
+}

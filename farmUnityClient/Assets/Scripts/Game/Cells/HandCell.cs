@@ -47,6 +47,6 @@ public class HandCell : MonoBehaviour
 	private void OnHandChosen(JSONNode handNode)
 	{
 		GameState.GetInstance().Hand = handNode;
-		GetComponentInParent<Game>().InitializeDynamicData();
+		GetComponentInParent<GameController>().InitializeDynamicData();
 	}
 }

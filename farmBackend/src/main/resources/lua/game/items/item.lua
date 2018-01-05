@@ -12,6 +12,7 @@ pickableObjects = {
         type = "tool",
         items = {
             wateringCan = "wateringCan",
+            shovel = "shovel",
             basket = "basket"
         }
     },

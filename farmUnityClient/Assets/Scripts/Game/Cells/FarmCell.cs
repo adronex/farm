@@ -86,7 +86,7 @@ public class FarmCell : MonoBehaviour
         {
             return new Color(0.53f, 0.8f, 1f);
         }
-        if (farmCell["id"] == "basketStand")
+        if (farmCell["type"] == "stand")
         {
             return new Color(1f, 0.78f, 0.64f);
         }
@@ -102,13 +102,15 @@ public class FarmCell : MonoBehaviour
             case "road":
             case "basketStand":
                 return "id: " + farmCell["id"];
+            case "shovelStand":
+                return "id: " + farmCell["id"];
             case "field":
                 if (farmCell["plant"]["id"] == null)
                 {
-                    return "id: " + farmCell["id"];
+                    return "id: " + farmCell["id"] + "\nstate: " + farmCell["state"];
                 }
                 
-                return "id: " + farmCell["id"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
+                return "id: " + farmCell["id"] + "\nstate: " + farmCell["state"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
                        farmCell["plant"]["id"]; 
             case "carrotSpawnBox":
                 return "id: " + farmCell["id"] + "\nobject: " + farmCell["spawnObjectId"] + "\nprice: " +
@@ -131,6 +133,6 @@ public class FarmCell : MonoBehaviour
     private void OnTargetChosen(JSONNode targetNode)
     {
         GameState.GetInstance().Target = targetNode;
-        GetComponentInParent<Game>().InitializeDynamicData();
+        GetComponentInParent<GameController>().InitializeDynamicData();
     }
 }
