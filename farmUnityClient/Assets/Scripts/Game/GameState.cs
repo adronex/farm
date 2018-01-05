@@ -4,7 +4,7 @@ public class GameState
 {
     private static readonly GameState State = new GameState();
 
-    private JSONArray _staticData;
+    private JSONObject _staticData;
     private JSONArray _bag;
     private JSONArray _farm;
     private JSONArray _workers;
@@ -20,7 +20,7 @@ public class GameState
 
     public void SetState(JSONNode state)
     {
-        _staticData = state["staticData"].AsArray;
+        _staticData = state["staticData"].AsObject;
         _bag = state["bag"].AsArray;
         _farm = state["farm"].AsArray;
         _shop = state["shop"].AsArray;
@@ -38,7 +38,7 @@ public class GameState
         return jsonObject.ToString();
     }
 
-    public JSONArray StaticData
+    public JSONObject StaticData
     {
         get { return _staticData; }
     }

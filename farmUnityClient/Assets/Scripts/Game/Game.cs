@@ -14,8 +14,10 @@ public class Game : MonoBehaviour
     public GridLayoutGroup Bag;
     public GridLayoutGroup Shop;
     public GridLayoutGroup Farm;
+    public GridLayoutGroup Hands;
     public Button Button;
     public Image BagCell;
+    public Image HandCell;
     public Image ShopCell;
     public Image FarmCell;
 
@@ -72,8 +74,8 @@ public class Game : MonoBehaviour
         GameState.GetInstance().SetState(parsed);
         _scriptHolder.SetState(parsed.AsObject);
         InitializeDynamicData();
-        Debug.Log(parsed["workers"][0]["position"]);
-        Debug.Log(parsed["workers"][0]["hand"]);
+//        Debug.Log(parsed["workers"][0]["position"]);
+//        Debug.Log(parsed["workers"][0]["hand"]);
     }
 
     public void InitializeDynamicData()
@@ -81,6 +83,7 @@ public class Game : MonoBehaviour
         StopAllCoroutines();
         SetBagTable();
         SetShopTable();
+        SetHandsTable();
         SetFarmTable();
         SetWorkers();
     }
@@ -133,6 +136,17 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void SetHandsTable()
+    {
+        InstantiateGameCells(GameState.GetInstance().Workers.Count, Hands, HandCell);
+        var workersData = GameState.GetInstance().Workers;
+        var handsCells = Hands.GetComponentsInChildren<Image>();
+        for (var i = 0; i < workersData.Count; i++)
+        {
+            handsCells[i].GetComponent<HandCell>().SetState(Hands, workersData[i]);
+        }
+    }
+
     private void SetFarmTable()
     {
         var farmData = GameState.GetInstance().Farm;
@@ -162,6 +176,7 @@ public class Game : MonoBehaviour
 
     private void SetWorkers()
     {
+        
         var workersData = GameState.GetInstance().Workers;
         var farmData = GameState.GetInstance().Farm;
         var farmCells = Farm.GetComponentsInChildren<Image>();

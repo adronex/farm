@@ -58,8 +58,8 @@ function Caravan(initializer)
                 end
             end
         end
-        for _, removeIndex in pairs(removeIndexes) do
-            table.remove(worker.hand.objects, removeIndex)
+        for i=#removeIndexes, 1, -1 do --reverse order is important
+            table.remove(worker.hand.objects, removeIndexes[i])
         end
         return { farm = farm, worker = worker }
     end

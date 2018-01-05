@@ -13,46 +13,11 @@ function StaticData()
 
     local items = {}
 
---    items.wateringCan = Item({
---        id = "wateringCan",
---        type = itemTypes.tool
---    })
---    items.basket = Item({
---        id = "basket",
---        type = itemTypes.tool
---    })
---    items.basket.objects = {}
     items.basketStand = Stand({
         id = "basketStand",
         type = itemTypes.stand,
         toolToHoldId = "basket"
     })
---    items.sickle = Item({
---        id = "sickle",
---        type = itemTypes.tool,
---        countable = false,
---        use = function(target)
---            if not target or target.id ~= items.field.id then
---                error("Can't apply 'sickle', invalid target: " .. target)
---            end
---            if #target.queue == 0 then
---                error("Production queue is empty")
---            end
---            if os.time() * 1000 < target.endTime then
---                error("Field is not ready yet. It will be ready after "..(target.endTime - os.time() * 1000).." milliseconds")
---            end
---            local reaped = table.remove(target.queue, 1)
---            target.endTime = nil
---            target.currentProductionTimeLeft = nil
---            bag.increaseCount(reaped.id, reaped.harvestValue)
---            return utils:copy(target)
---        end
---    });
---    items.wheat = Plant({
---        id = "wheat",
---        preparationTime = 10000,
---        harvestValue = 3
---    });
     items.carrot = Item({
         id = "carrot",
         type = itemTypes.fruit
@@ -79,17 +44,10 @@ function StaticData()
     items.field = Field({
         id = "field"
     })
---    items.well = Item({
---        id = "well",
---        type = itemTypes.foundation
---    })
     items.carrotSpawnBox = Item({
         id = "carrotSpawnBox",
         type = itemTypes.spawnBox,
         use = function(farm, worker, target)
-            if worker.hand.id then
-                error ("Worker's hand must be empty, but it has "..worker.hand.id)
-            end
             local carrot = staticData.getItems().carrotSeed;
             --todo: buyPrice
             --todo: bagService
@@ -105,8 +63,8 @@ function StaticData()
         orders = {
             {
                 itemId = "carrot",
-                countFrom = 3,
-                countTo = 6
+                countFrom = 6,
+                countTo = 10
             }
         },
         rewards = {
@@ -125,7 +83,7 @@ function StaticData()
             if not parkingPlace.caravan then
                 error ("Parking place is empty")
             end
-            farm = caravanToBeRemoved.use(farm, worker, target)
+            farm = caravanToBeRemoved.use(farm, worker, target).farm
             if caravanToBeRemoved.isReady(parkingPlace.caravan) then
                 for _, reward in pairs(parkingPlace.caravan.rewards) do
                     bag.increaseCount(reward.itemId, reward.count)
