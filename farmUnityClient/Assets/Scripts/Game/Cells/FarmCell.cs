@@ -29,9 +29,11 @@ public class FarmCell : MonoBehaviour
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_cellState); });
-        if (_cellState["currentProductionTimeLeft"] != null)
+        if (_cellState["endTime"] != null)
         {
-            CurrentTimer = _cellState["currentProductionTimeLeft"].AsFloat / 1000;
+            var cd = _cellState["endTime"].AsDouble - Utils.Now();
+            cd = cd > 0 ? cd : 0;
+            CurrentTimer = (float)cd / 1000;
         }
         _timer = StartCoroutine(TimerIenumerator());
     }
@@ -40,8 +42,9 @@ public class FarmCell : MonoBehaviour
     {
         while (CurrentTimer > 0)
         {
-            CurrentTimer -= Time.deltaTime;
+            CurrentTimer = (float)(_cellState["endTime"].AsDouble - Utils.Now()) / 1000;
             GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
+            GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
             yield return null;
         }
         CurrentTimer = 0;
@@ -50,7 +53,7 @@ public class FarmCell : MonoBehaviour
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
     }
 
-    private static Color GetFarmCellColor(JSONNode farmCell)
+    private Color GetFarmCellColor(JSONNode farmCell)
     {
 //        var selected = farmCell["x"] == GameState.GetInstance().Target["x"] &&
 //                       farmCell["y"] == GameState.GetInstance().Target["y"];
@@ -65,7 +68,15 @@ public class FarmCell : MonoBehaviour
         }
         if (farmCell["id"] == "field")
         {
-            return new Color(0.59f, 0.39f, 0.25f);
+            if (farmCell["plant"]["id"] == null)
+            {
+                return new Color(0.59f, 0.56f, 0.35f);
+            }
+            if (CurrentTimer > 0)
+            {
+                return new Color(0.59f, 0.28f, 0.24f);
+            }
+            return new Color(0.59f, 0.39f, 0.25f); 
         }
         if (farmCell["id"] == "carrotSpawnBox")
         {
@@ -92,7 +103,12 @@ public class FarmCell : MonoBehaviour
             case "basketStand":
                 return "id: " + farmCell["id"];
             case "field":
-                return "id: " + farmCell["id"] + "\ncd: " + farmCell["productionTimeLeft"] + "\nplant: " +
+                if (farmCell["plant"]["id"] == null)
+                {
+                    return "id: " + farmCell["id"];
+                }
+                
+                return "id: " + farmCell["id"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
                        farmCell["plant"]["id"]; 
             case "carrotSpawnBox":
                 return "id: " + farmCell["id"] + "\nobject: " + farmCell["spawnObjectId"] + "\nprice: " +

@@ -26,9 +26,13 @@ public class HandCell : MonoBehaviour
 		GetComponent<Button>().onClick.AddListener(delegate { OnHandChosen(_cellState["item"]); });
 	}
     
-	private static Color GetShopItemColor(JSONNode handItem)
+	private static Color GetShopItemColor(JSONNode workerItem)
 	{
-		return new Color(0.49f, 1f, 0.54f);
+		if (workerItem["hand"]["id"])
+		{
+			return new Color(0.49f, 1f, 0.54f);
+		}
+		return new Color(1f, 0.56f, 0.55f);
 	}
 
 	private static string GetShopItemText(JSONNode workerItem)

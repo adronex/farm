@@ -41,7 +41,7 @@ public class BagCell : MonoBehaviour
 
 	private static string GetBagItemText(JSONNode inventoryItem)
 	{
-		return inventoryItem["item"]["id"] + "\ncount: " + inventoryItem["count"].AsInt;
+		return inventoryItem["id"] + "\ncount: " + inventoryItem["count"].AsInt;
 	}
 
 	private void OnHandChosen(JSONNode handNode)
