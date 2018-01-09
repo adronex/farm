@@ -35,14 +35,27 @@ local createFarm = function()
     }
 end
 
+local exportFarm = function(farmJsonObject)
+    local farm = json.parse(farmJsonObject)
+    farms[farm.name] = farm
+end
+
 --todo: this is an alpha-version implementation
-local exportFarm = function(exportData)
+local loadCurrentFarmData = function(exportData)
     if exportData and type(exportData) == "table" then
         local farm = createFarm()
         farm.cells = exportData
         return farm
     end
     error("Can't export farm - export data is invalid: " .. json.stringify(exportData))
+end
+
+local loadFarmByName = function (name)
+    if farms[name] ~= nil then
+        farm = farms[name]
+    else
+        error("Can't load farm with name '" .. name .. "' because it doesn't exist")
+    end
 end
 
 local applyWorkerToCell = function(farm, worker, target)
@@ -61,12 +74,9 @@ end
 farmService = {
     createFarm = createFarm,
     exportFarm = exportFarm,
+    loadCurrentFarmData = loadCurrentFarmData,
+    loadFarmByName = loadFarmByName,
     applyWorkerToCell = applyWorkerToCell
 }
 
-local file = io.open("lua/game/levels/farm1.json", "r")
-local content = file:read("*a")
-io.close()
-print(content)
-
-farm = createFarm()
+farms = {}

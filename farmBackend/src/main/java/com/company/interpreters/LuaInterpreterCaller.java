@@ -6,6 +6,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 import javax.script.ScriptException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 public class LuaInterpreterCaller implements InterpreterCaller {
 
@@ -30,8 +33,18 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		globals.get("dofile").call("lua/game/bag.lua");
 //		globals.get("dofile").call("lua/game/shop.lua");
 		globals.get("dofile").call("lua/game/api.lua");
+
+		loadFarm(globals, "lua/game/levels/farm1.json");
+		globals.get("farmService").get("loadFarmByName").call("farm1");
 		setStateFunction = globals.get("setState");
 		executeCommandFunction = globals.get("commandHandler");
+	}
+
+	private void loadFarm(Globals luaGlobals, String path) {
+		String result = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(path)))
+				.lines()
+				.collect(Collectors.joining());
+		luaGlobals.get("farmService").get("exportFarm").call(result);
 	}
 
 	@Override

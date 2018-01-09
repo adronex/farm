@@ -11,13 +11,12 @@ function setState(dataString)
     local data = json.parse(dataString)
     bag = Bag(data.bag)
     if data.farm then
-        farm = farmService.exportFarm(data.farm)
+        farm = farmService.loadCurrentFarmData(data.farm)
     end
 --    shop = Shop()
 end
 
 function getDataAsString()
-
     return json.stringify({
         staticData = {
             inventoryObjects = inventoryObjects,
