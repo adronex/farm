@@ -37,13 +37,12 @@
         "state": "unplowed",
         "type": "field",
         "plant": {},
-        "id": "field",
-        "use": null
+        "currentState": "unplowed",
+        "id": "field"
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "caravanParkingPlace",
@@ -83,13 +82,12 @@
         "state": "unplowed",
         "type": "field",
         "plant": {},
-        "id": "field",
-        "use": null
+        "currentState": "unplowed",
+        "id": "field"
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "ground",
@@ -109,19 +107,17 @@
         "state": "unplowed",
         "type": "field",
         "plant": {},
-        "id": "field",
-        "use": null
+        "currentState": "unplowed",
+        "id": "field"
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "shovelStand",
         "type": "stand",
-        "toolToHoldId": "shovel",
-        "use": null
+        "toolToHoldId": "shovel"
       },
       {
         "id": "ground",
@@ -137,13 +133,12 @@
         "state": "unplowed",
         "type": "field",
         "plant": {},
-        "id": "field",
-        "use": null
+        "currentState": "unplowed",
+        "id": "field"
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "basketStand",
@@ -167,8 +162,7 @@
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "ground",
@@ -190,8 +184,7 @@
       },
       {
         "id": "road",
-        "type": "road",
-        "use": null
+        "type": "road"
       },
       {
         "id": "ground",

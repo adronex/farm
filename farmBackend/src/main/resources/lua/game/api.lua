@@ -25,7 +25,7 @@ function getDataAsString()
         },
         workers = workers,
         bag = bag.getCopyOfAllItems(),
-        farm = farm.cells,
+        farm = farm,
 --        shop = shop.getCopyOfAllItems()
     })
 end

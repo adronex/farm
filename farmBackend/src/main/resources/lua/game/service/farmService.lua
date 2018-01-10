@@ -43,8 +43,7 @@ end
 --todo: this is an alpha-version implementation
 local loadCurrentFarmData = function(exportData)
     if exportData and type(exportData) == "table" then
-        local farm = createFarm()
-        farm.cells = exportData
+        local farm = exportData
         return farm
     end
     error("Can't export farm - export data is invalid: " .. json.stringify(exportData))

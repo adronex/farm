@@ -19,7 +19,10 @@ pickableObjects = {
     seeds = {
         type = "seed",
         items = {
-            carrot = "carrot"
+            carrot = "carrot",
+            wheat = "wheat",
+            cucumber = "cucumber",
+            corn = "corn"
         }
     },
     fruits = {

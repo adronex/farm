@@ -23,6 +23,11 @@ function StaticData()
         type = itemTypes.stand,
         toolToHoldId = "shovel"
     })
+    items.wateringCanStand = Stand({
+        id = "wateringCanStand",
+        type = itemTypes.stand,
+        toolToHoldId = "wateringCan"
+    })
     items.carrot = Item({
         id = "carrot",
         type = itemTypes.fruit
@@ -36,6 +41,15 @@ function StaticData()
     items.road = Item({
         id = "road",
         type = itemTypes.road,
+        use = function(farm, worker, target)
+            worker.position.row = target.row
+            worker.position.col = target.col
+            return { farm = farm, worker = worker }
+        end
+    })
+    items.wateringCan = Item({
+        id = pickableObjects.tools.items.wateringCan,
+        type = pickableObjects.tools.type,
         use = function(farm, worker, target)
             worker.position.row = target.row
             worker.position.col = target.col
@@ -58,6 +72,7 @@ function StaticData()
         end
     })
     items.carrotSpawnBox.spawnObjectId = pickableObjects.seeds.items.carrot;
+    items.carrotSpawnBox.spawnObjectType = pickableObjects.seeds.type;
     items.carrotSpawnBox.buyPrice = 3;
     local caravanInitializer = {
         id = "caravan",

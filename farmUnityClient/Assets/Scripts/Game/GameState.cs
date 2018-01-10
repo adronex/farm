@@ -6,7 +6,7 @@ public class GameState
 
     private JSONObject _staticData;
     private JSONArray _bag;
-    private JSONArray _farm;
+    private JSONObject _farm;
     private JSONArray _workers;
     private JSONArray _shop;
     
@@ -22,7 +22,7 @@ public class GameState
     {
         _staticData = state["staticData"].AsObject;
         _bag = state["bag"].AsArray;
-        _farm = state["farm"].AsArray;
+        _farm = state["farm"].AsObject;
         _shop = state["shop"].AsArray;
         _workers = state["workers"].AsArray;
     }
@@ -50,7 +50,7 @@ public class GameState
 
     public JSONArray Farm
     {
-        get { return _farm; }
+        get { return _farm["cells"].AsArray; }
     }
 
     public JSONArray Shop

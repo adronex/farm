@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="farmApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Farm level editor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script>
+
+        angular.module('farmApp', []).controller('LevelEditor', function () {
+            let editor = this;
+            editor.objects = [
+                {
+                    "id": "ground",
+                    "type": "foundation"
+                },
+                {
+                    "type": "spawnBox",
+                    "buyPrice": 3,
+                    "id": "carrotSpawnBox",
+                    "spawnObjectId": "carrot"
+                },
+                {
+                    "type": "spawnBox",
+                    "buyPrice": 2,
+                    "id": "wheatSpawnBox",
+                    "spawnObjectId": "wheat"
+                },
+                {
+                    "type": "spawnBox",
+                    "buyPrice": 4,
+                    "id": "cucumberSpawnBox",
+                    "spawnObjectId": "cucumber"
+                },
+                {
+                    "type": "spawnBox",
+                    "buyPrice": 6,
+                    "id": "cornSpawnBox",
+                    "spawnObjectId": "corn"
+                },
+                {
+                    "state": "unplowed",
+                    "type": "field",
+                    "plant": {},
+                    "id": "field"
+                },
+                {
+                    "id": "road",
+                    "type": "road"
+                },
+                {
+                    "id": "basketStand",
+                    "type": "stand",
+                    "toolToHoldId": "basket"
+                },
+                {
+                    "id": "wateringCanStand",
+                    "type": "stand",
+                    "toolToHoldId": "wateringCan"
+                },
+                {
+                    "id": "shovelStand",
+                    "type": "stand",
+                    "toolToHoldId": "shovel"
+                }
+            ];
+            editor.defaultObject = editor.objects[0];
+            editor.farm = {};
+            editor.farm.name = "Farm";
+            editor.farm.cells = [[editor.defaultObject]];
+            editor.farm.height = editor.farm.cells.length;
+            editor.farm.width = editor.farm.cells[0].length;
+            editor.asJson = JSON.stringify(editor.farm);
+
+            editor.changeRowsCount = function () {
+                let farm = editor.farm;
+                if (farm.height < farm.cells.length) {
+                    let delta = farm.cells.length - farm.height;
+                    for (let i = 0; i < delta; i++) {
+                        farm.cells.pop();
+                    }
+                } else if (farm.height > farm.cells.length) {
+                    let delta = farm.height - farm.cells.length;
+                    let newRow = [];
+                    for (let i = 0; i < farm.width; i++) {
+                        newRow.push(editor.defaultObject)
+                    }
+                    for (let i = 0; i < delta; i++) {
+                        let copy = JSON.parse(JSON.stringify(newRow));
+                        farm.cells.push(copy);
+                    }
+                }
+            };
+
+            editor.changeColumnsCount = function () {
+                let farm = editor.farm;
+                if (farm.width < farm.cells[0].length) {
+                    let delta = farm.cells[0].length - farm.width;
+                    for (let i = 0; i < farm.cells.length; i++) {
+                        for (let j = 0; j < delta; j++) {
+                            farm.cells[i].pop();
+                        }
+                    }
+                } else if (farm.width > farm.cells[0].length) {
+                    let delta = farm.width - farm.cells[0].length;
+                    for (let i = 0; i < farm.height; i++) {
+                        for (let j = 0; j < delta; j++) {
+                            farm.cells[i].push(editor.defaultObject);
+                        }
+                    }
+                }
+            };
+
+            let hashCode = function(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                return hash;
+            };
+
+            let intToRGB = function(i){
+                const c = (i & 0x00FFFFFF)
+                    .toString(16)
+                    .toUpperCase();
+
+                return "#" + "00000".substring(0, 6 - c.length) + c;
+            };
+
+            editor.getCellStyle = function (cell) {
+                return {"background-color": intToRGB(hashCode(JSON.stringify(cell)))};
+            };
+
+            editor.onEditorObjectClicked = function (cell) {
+                editor.defaultObject = cell;
+            };
+
+            editor.onFarmCellClick = function(row, col) {
+                editor.farm.cells[row][col] = editor.defaultObject;
+            };
+
+            editor.onToJsonButtonClicked = function () {
+                editor.asJson = JSON.stringify(editor.farm);
+            };
+
+            editor.onFromJsonButtonClicked = function () {
+                editor.farm = JSON.parse(editor.asJson);
+            };
+        })
+    </script>
+</head>
+<style>
+    .objects {
+        width: 100%;
+        margin: 20px;
+        float: left;
+    }
+
+    .farm {
+        margin: 20px;
+    }
+
+    .row {
+        overflow: auto;
+    }
+
+    .cell {
+        height: 80px;
+        width: 80px;
+        margin-top: 5px;
+        margin-left: 5px;
+        display: block;
+        float: left;
+    }
+
+    .jsonArea {
+        overflow: scroll;
+        width: 600px;
+        height: 400px;
+        border: 1px black solid;
+    }
+</style>
+<body ng-controller="LevelEditor as editor">
+<div>
+    <div class="objects">
+        <div ng-repeat="cell in editor.objects track by $index"
+             ng-click="editor.onEditorObjectClicked(cell)"
+             class="cell"
+             ng-style="editor.getCellStyle(cell)">
+            {{cell.id}} {{cell.type}}
+        </div>
+    </div>
+    <div>
+        <label>Farm name:
+            <input type="text"
+                   ng-model="editor.farm.name"/>
+        </label>
+    </div>
+    <div>
+        <label>Height:
+            <input type="number"
+                   ng-min="1"
+                   ng-model="editor.farm.height"
+                   ng-change="editor.changeRowsCount()"/>
+        </label>
+    </div>
+    <div>
+        <label>Width:
+            <input type="number"
+                   ng-min="1"
+                   ng-model="editor.farm.width"
+                   ng-change="editor.changeColumnsCount()"/>
+        </label>
+    </div>
+</div>
+<div class="farm">
+    <div ng-repeat="row in editor.farm.cells track by $index"
+         class="row">
+        <div ng-repeat="cell in row track by $index"
+             ng-click="editor.onFarmCellClick($parent.$index, $index)"
+             class="cell"
+             ng-style="editor.getCellStyle(cell)">
+            {{cell.id}} {{cell.type}}
+        </div>
+    </div>
+    <div>
+        <button ng-click="editor.onToJsonButtonClicked()">
+            To JSON
+        </button>
+    </div>
+</div>
+<div>
+    <textarea ng-model="editor.asJson"
+              class="jsonArea">
+    </textarea>
+</div>
+<div>
+    <button ng-click="editor.onFromJsonButtonClicked()">
+        From JSON
+    </button>
+</div>
+</body>
+</html>
