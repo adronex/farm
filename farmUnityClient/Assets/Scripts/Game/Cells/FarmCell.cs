@@ -107,10 +107,10 @@ public class FarmCell : MonoBehaviour
             case "field":
                 if (farmCell["plant"]["id"] == null)
                 {
-                    return "id: " + farmCell["id"] + "\nstate: " + farmCell["state"];
+                    return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"];
                 }
                 
-                return "id: " + farmCell["id"] + "\nstate: " + farmCell["state"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
+                return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
                        farmCell["plant"]["id"]; 
             case "carrotSpawnBox":
                 return "id: " + farmCell["id"] + "\nobject: " + farmCell["spawnObjectId"] + "\nprice: " +
