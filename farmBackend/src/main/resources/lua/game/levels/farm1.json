@@ -6,11 +6,11 @@
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "type": "spawnBox",
@@ -21,20 +21,19 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
         "currentState": "unplowed",
@@ -70,16 +69,15 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
         "currentState": "unplowed",
@@ -91,20 +89,19 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
         "currentState": "unplowed",
@@ -116,21 +113,20 @@
       },
       {
         "id": "shovelStand",
-        "type": "stand",
+        "type": "stands",
         "toolToHoldId": "shovel"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
         "currentState": "unplowed",
@@ -142,23 +138,23 @@
       },
       {
         "id": "basketStand",
-        "type": "stand",
+        "type": "stands",
         "toolToHoldId": "basket",
         "use": null
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -166,21 +162,21 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -188,11 +184,11 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ]
   ]

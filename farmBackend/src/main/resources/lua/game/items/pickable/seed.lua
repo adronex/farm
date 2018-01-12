@@ -1,9 +1,7 @@
 function Seed(initializer)
+    initializer.mandatoryFields = {"preparationTime", "fruitsCount", "fruitId"}
     initializer.type = 'seed'
     local it = Item(initializer)
-    it.preparationTime = initializer.preparationTime;
-    it.fruitsCount = initializer.fruitsCount;
-    it.fruitId = initializer.fruitId;
     it.currentState = "readyForCollection"
 
     local actionsByState = {

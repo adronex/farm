@@ -4,153 +4,153 @@
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "basketStand",
-        "type": "stand",
+        "type": "stands",
         "toolToHoldId": "basket"
       },
       {
@@ -159,29 +159,29 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -209,21 +209,21 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -231,11 +231,11 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -243,83 +243,41 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "road",
-        "type": "road"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      }
-    ],
-    [
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
-      },
-      {
-        "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -327,41 +285,83 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "road",
+        "type": "road"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
       },
       {
         "id": "wateringCanStand",
-        "type": "stand",
+        "type": "stands",
         "toolToHoldId": "wateringCan"
       },
       {
@@ -370,33 +370,33 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
@@ -420,46 +420,46 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
         "type": "road"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
@@ -468,47 +468,47 @@
       },
       {
         "id": "shovelStand",
-        "type": "stand",
+        "type": "stands",
         "toolToHoldId": "shovel"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "road",
         "type": "road"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
-        "state": "unplowed",
         "type": "field",
         "plant": {},
+        "currentState": "unplowed",
         "id": "field"
       },
       {
@@ -517,21 +517,21 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "type": "spawnBox",
@@ -561,21 +561,21 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "type": "spawnBox",
@@ -589,65 +589,65 @@
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ],
     [
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       },
       {
         "id": "ground",
-        "type": "foundation"
+        "type": "foundations"
       }
     ]
   ],

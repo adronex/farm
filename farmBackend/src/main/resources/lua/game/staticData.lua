@@ -38,47 +38,80 @@ function StaticData()
         fruitsCount = 3,
         fruitId = "carrot"
     })
-    items.road = Item({
-        id = "road",
-        type = itemTypes.road,
-        use = function(farm, worker, target)
-            worker.position.row = target.row
-            worker.position.col = target.col
-            return { farm = farm, worker = worker }
-        end
+    items.wheat = Item({
+        id = "wheat",
+        type = itemTypes.fruit
+    })
+    items.wheatSeed = Seed({
+        id = "wheatSeed",
+        preparationTime = 3000,
+        fruitsCount = 5,
+        fruitId = "wheat"
+    })
+    items.cucumber = Item({
+        id = "cucumber",
+        type = itemTypes.fruit
+    })
+    items.cucumberSeed = Seed({
+        id = "cucumberSeed",
+        preparationTime = 14000,
+        fruitsCount = 4,
+        fruitId = "cucumber"
+    })
+    items.corn = Item({
+        id = "corn",
+        type = itemTypes.fruit
+    })
+    items.cornSeed = Seed({
+        id = "cornSeed",
+        preparationTime = 16000,
+        fruitsCount = 4,
+        fruitId = "corn"
+    })
+    items.road = Road({
+        id = "road"
     })
     items.wateringCan = Item({
         id = pickableObjects.tools.items.wateringCan,
         type = pickableObjects.tools.type,
-        use = function(farm, worker, target)
-            worker.position.row = target.row
-            worker.position.col = target.col
-            return { farm = farm, worker = worker }
-        end
+--        use = function(farm, worker, target)
+--            worker.position.row = target.row
+--            worker.position.col = target.col
+--            return { farm = farm, worker = worker }
+--        end
     })
     items.field = Field({
         id = "field"
     })
-    items.carrotSpawnBox = Item({
+    items.carrotSpawnBox = SpawnBox({
         id = "carrotSpawnBox",
-        type = itemTypes.spawnBox,
-        use = function(farm, worker, target)
-            local carrot = staticData.getItems().carrotSeed;
-            --todo: buyPrice
-            --todo: bagService
-            bag.decreaseCount(inventoryObjects.currencies.items.softMoney, 3)
-            worker.hand = carrot
-            return { farm = farm, worker = worker }
-        end
+        spawnObjectId = pickableObjects.seeds.items.carrot,
+        spawnObjectType = pickableObjects.seeds.type,
+        buyPrice = 3
     })
-    items.carrotSpawnBox.spawnObjectId = pickableObjects.seeds.items.carrot;
-    items.carrotSpawnBox.spawnObjectType = pickableObjects.seeds.type;
-    items.carrotSpawnBox.buyPrice = 3;
+    items.wheatSpawnBox = SpawnBox({
+        id = "wheatSpawnBox",
+        spawnObjectId = pickableObjects.seeds.items.wheat,
+        spawnObjectType = pickableObjects.seeds.type,
+        buyPrice = 3
+    })
+    items.cornSpawnBox = SpawnBox({
+        id = "cornSpawnBox",
+        spawnObjectId = pickableObjects.seeds.items.corn,
+        spawnObjectType = pickableObjects.seeds.type,
+        buyPrice = 4
+    })
+    items.cucumberSpawnBox = SpawnBox({
+        id = "cucumberSpawnBox",
+        spawnObjectId = pickableObjects.seeds.items.cucumber,
+        spawnObjectType = pickableObjects.seeds.type,
+        buyPrice = 5
+    })
     local caravanInitializer = {
         id = "caravan",
         orders = {
             {
-                itemId = "carrot",
+                itemId = pickableObjects.fruits.items.carrot,
                 countFrom = 6,
                 countTo = 10
             }
@@ -90,26 +123,11 @@ function StaticData()
             }
         }
     }
-    local caravanToBeRemoved = Caravan(caravanInitializer)
-    items.caravanParkingPlace = Item({
-        id = "caravanParkingPlace",
-        type = itemTypes.caravanParkingPlace,
-        use = function(farm, worker, target)
-            local parkingPlace = farm.cells[target.row][target.col]
-            if not parkingPlace.caravan then
-                error ("Parking place is empty")
-            end
-            farm = caravanToBeRemoved.use(farm, worker, target).farm
-            if caravanToBeRemoved.isReady(parkingPlace.caravan) then
-                for _, reward in pairs(parkingPlace.caravan.rewards) do
-                    bag.increaseCount(reward.itemId, reward.count)
-                end
-                parkingPlace.caravan = Caravan(caravanInitializer)
-            end
-            return { farm = farm, worker = worker }
-        end
+  --  local caravanToBeRemoved = Caravan(caravanInitializer)
+    items.caravanParkingPlace = CaravanParkingPlace({
+        id = "caravanParkingPlace"
     })
-    items.caravanParkingPlace.caravan = Caravan(caravanInitializer)
+    items.defaultCaravan = Caravan(caravanInitializer)
 
     local getItemTypes = function()
         return utils:copy(itemTypes)

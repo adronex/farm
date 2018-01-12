@@ -2,8 +2,8 @@ local createWorker = function()
     local id = "Uasya"
     local hand = {}
     local position = {
-        row = 2,
-        col = 3
+        row = 13,
+        col = 5
     }
 
     return {

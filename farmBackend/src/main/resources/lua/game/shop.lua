@@ -2,7 +2,7 @@
 function Shop()
     local shopItems = {
         {
-            item = staticData.getItems().well,
+            item = groundObjects.factories.items.well,
             buyPrice = 0,
             sellPrice = 0
         }
@@ -26,7 +26,7 @@ function Shop()
     local buy = function(itemId)
         local item = findShopItem(itemId)
         if not item then error ("There is no shop item with id "..itemId) end
-        bag.decreaseCount(staticData.getItems().softMoney.id, item.buyPrice)
+        bag.decreaseCount(inventoryObjects.currencies.items.softMoney, item.buyPrice)
         bag.increaseCount(item.item.id, 1)
     end
 
@@ -40,7 +40,7 @@ function Shop()
             error ("You can't sell item with id "..itemId.."because shop doesn't contain it")
         end
         bag.decreaseCount(item.item.id, 1);
-        bag.increaseCount(staticData.getItems().softMoney.id, item.sellPrice)
+        bag.increaseCount(inventoryObjects.currencies.items.softMoney, item.sellPrice)
     end
 
     return {

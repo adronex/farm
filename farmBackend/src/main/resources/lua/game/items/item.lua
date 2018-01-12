@@ -1,6 +1,6 @@
 inventoryObjects = {
     currencies = {
-        type = "currency",
+        type = "currencies",
         items = {
             softMoney = "softMoney"
         }
@@ -9,7 +9,7 @@ inventoryObjects = {
 
 pickableObjects = {
     tools = {
-        type = "tool",
+        type = "tools",
         items = {
             wateringCan = "wateringCan",
             shovel = "shovel",
@@ -17,7 +17,7 @@ pickableObjects = {
         }
     },
     seeds = {
-        type = "seed",
+        type = "seeds",
         items = {
             carrot = "carrot",
             wheat = "wheat",
@@ -26,50 +26,72 @@ pickableObjects = {
         }
     },
     fruits = {
-        type = "fruit",
+        type = "fruits",
         items = {
-            carrot = "carrot"
+            carrot = "carrot",
+            wheat = "wheat",
+            cucumber = "cucumber",
+            corn = "corn"
         }
     }
 }
 
 groundObjects = {
     foundations = {
-        type = "foundation",
+        type = "foundations",
         items = {
             ground = "ground"
         }
     },
     fields = {
-        type = "field",
+        type = "fields",
         item = {
             field = "field"
         }
     },
     stands = {
-        type = "stand",
+        type = "stands",
         items = {
             basketStand = "basketStand"
+        }
+    },
+    factories = {
+        type = "factories",
+        items = {
+            well = "well",
+            caravanParkingPlace = "caravanParkingPlace"
+        }
+    },
+    spawnBoxes = {
+        type = "spawnBoxes",
+        items = {
+            carrot = "carrot",
+            wheat = "wheat",
+            cucumber = "cucumber",
+            corn = "corn"
         }
     }
 }
 
 function Item(initializer)
-    if not initializer.id or not initializer.type then
-        error("Id and type parameters are mandatory")
+    if not initializer.mandatoryFields or type(initializer.mandatoryFields) ~= "table" then
+        initializer.mandatoryFields = {}
     end
-    local id = initializer.id
-    local type = initializer.type
-    local use = function(farm, worker, target)
-        error("'use' function isn't implemented for item '" .. id .. "' of type '" .. type .."'")
+    table.insert(initializer.mandatoryFields, "id")
+    table.insert(initializer.mandatoryFields, "type")
+    local self = {}
+    self.use = function(farm, worker, target)
+        error("'use' function hasn't been implemented for item '" .. self.id .. "' of type '" .. self.type .. "'")
     end
-    if initializer.use then
-        use = initializer.use
+    for _, it in pairs(initializer.mandatoryFields) do
+        if type(it) ~= "string" then
+            error("Mandatory field should be string but it is a '" .. type(it) .. "'")
+        elseif not (initializer[it]) then
+            error("Can't create item, field '" .. it .. "' is mandatory but is not set in initializer:" .. json.stringify(initializer))
+        else
+            self[it] = initializer[it]
+        end
     end
 
-    return {
-        id = id,
-        type = type,
-        use = use
-    }
+    return self
 end

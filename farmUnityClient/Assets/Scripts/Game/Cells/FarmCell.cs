@@ -55,18 +55,15 @@ public class FarmCell : MonoBehaviour
 
     private Color GetFarmCellColor(JSONNode farmCell)
     {
-//        var selected = farmCell["x"] == GameState.GetInstance().Target["x"] &&
-//                       farmCell["y"] == GameState.GetInstance().Target["y"];
-//        var alpha = selected ? 0.6f : 1f;
-        if (farmCell["id"] == "ground")
+        if (farmCell["type"] == "foundations")
         {
             return new Color(0.86f, 0.86f, 0.86f);
         }
-        if (farmCell["id"] == "road")
+        if (farmCell["type"] == "road")
         {
             return new Color(0.54f, 0.54f, 0.54f);
         }
-        if (farmCell["id"] == "field")
+        if (farmCell["type"] == "field")
         {
             if (farmCell["plant"]["id"] == null)
             {
@@ -78,7 +75,7 @@ public class FarmCell : MonoBehaviour
             }
             return new Color(0.59f, 0.39f, 0.25f); 
         }
-        if (farmCell["id"] == "carrotSpawnBox")
+        if (farmCell["type"] == "spawnBox")
         {
             return new Color(1f, 0.57f, 0.87f);
         }
@@ -86,7 +83,7 @@ public class FarmCell : MonoBehaviour
         {
             return new Color(0.53f, 0.8f, 1f);
         }
-        if (farmCell["type"] == "stand")
+        if (farmCell["type"] == "stands")
         {
             return new Color(1f, 0.78f, 0.64f);
         }
@@ -96,38 +93,48 @@ public class FarmCell : MonoBehaviour
     private string GetFarmCellText(JSONNode farmCell)
     {
         string id = farmCell["id"];
-        switch (id)
+        string type = farmCell["type"];
+        if (type == "road") return GetDefaultCellText(farmCell);
+        if (type == "foundations") return GetDefaultCellText(farmCell);
+        if (type == "stands") return GetDefaultCellText(farmCell);
+        if (type == "field") return GetFieldCellText(farmCell);
+        if (type == "spawnBox") return GetFieldCellText(farmCell);
+        if (type == "caravanParkingPlace") return GetCaravanCellText(farmCell);
+        return "";
+    }
+
+    private string GetDefaultCellText(JSONNode farmCell)
+    {
+        return "id: " + farmCell["id"];
+    }
+    
+    private string GetFieldCellText(JSONNode farmCell)
+    {
+        if (farmCell["plant"]["id"] == null)
         {
-            case "ground":
-            case "road":
-            case "basketStand":
-                return "id: " + farmCell["id"];
-            case "shovelStand":
-                return "id: " + farmCell["id"];
-            case "field":
-                if (farmCell["plant"]["id"] == null)
-                {
-                    return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"];
-                }
-                
-                return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
-                       farmCell["plant"]["id"]; 
-            case "carrotSpawnBox":
-                return "id: " + farmCell["id"] + "\nobject: " + farmCell["spawnObjectId"] + "\nprice: " +
-                       farmCell["buyPrice"]; 
-            case "caravanParkingPlace":
-                var response = "id: " + farmCell["id"];
-                if (farmCell["caravan"]["orders"] != null)
-                {
-                    foreach (JSONNode order in farmCell["caravan"]["orders"].AsArray)
-                    {
-                        response += "\n" + order["itemId"] + ": " + order["currentCount"] + "/" + order["requiredCount"];
-                    }
-                }
-                return response;
-            default:
-                return "";
+            return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"];
+        }       
+        return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"] + "\ncd: " + CurrentTimer.ToString("0.00") + "\nplant: " +
+               farmCell["plant"]["id"]; 
+    }
+    
+    private string GetSpawnBoxCellText(JSONNode farmCell)
+    {
+        return "id: " + farmCell["id"] + "\nobject: " + farmCell["spawnObjectId"] + "\nprice: " +
+               farmCell["buyPrice"]; 
+    }
+
+    private string GetCaravanCellText(JSONNode farmCell)
+    {
+        var response = "id: " + farmCell["id"];
+        if (farmCell["caravan"]["orders"] != null)
+        {
+            foreach (JSONNode order in farmCell["caravan"]["orders"].AsArray)
+            {
+                response += "\n" + order["itemId"] + ": " + order["currentCount"] + "/" + order["requiredCount"];
+            }
         }
+        return response;
     }
 
     private void OnTargetChosen(JSONNode targetNode)

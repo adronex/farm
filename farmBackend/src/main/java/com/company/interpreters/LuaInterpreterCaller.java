@@ -21,12 +21,16 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 		globals.get("dofile").call("lua/game/utils.lua");
 
 		globals.get("dofile").call("lua/game/items/item.lua");
-		globals.get("dofile").call("lua/game/items/field.lua");
-		globals.get("dofile").call("lua/game/items/seed.lua");
-		globals.get("dofile").call("lua/game/items/stand.lua");
-		globals.get("dofile").call("lua/game/items/caravan.lua");
+		globals.get("dofile").call("lua/game/items/ground/field.lua");
+		globals.get("dofile").call("lua/game/items/pickable/seed.lua");
+		globals.get("dofile").call("lua/game/items/ground/spawnBox.lua");
+		globals.get("dofile").call("lua/game/items/ground/stand.lua");
+		globals.get("dofile").call("lua/game/items/ground/caravan.lua");
+		globals.get("dofile").call("lua/game/items/ground/caravanParkingPlace.lua");
+		globals.get("dofile").call("lua/game/items/ground/road.lua");
 		globals.get("dofile").call("lua/game/staticData.lua");
 
+		globals.get("dofile").call("lua/game/service/itemService.lua");
 		globals.get("dofile").call("lua/game/service/workerService.lua");
 		globals.get("dofile").call("lua/game/service/farmService.lua");
 
@@ -36,7 +40,7 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 
 		loadFarm(globals, "lua/game/levels/farm1.json");
 		loadFarm(globals, "lua/game/levels/farm2.json");
-		globals.get("farmService").get("loadFarmByName").call("farm1");
+		globals.get("farmService").get("loadFarmByName").call("farm2");
 		setStateFunction = globals.get("setState");
 		executeCommandFunction = globals.get("commandHandler");
 	}

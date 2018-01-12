@@ -48,7 +48,8 @@ function Caravan(initializer)
         if not worker.hand or worker.hand.id ~= pickableObjects.tools.items.basket then
             error ("Invalid worker hand: "..json.stringify(worker.hand))
         end
-        local caravan = farm.cells[target.row][target.col].caravan
+        local caravanParkingPlace = farm.cells[target.row][target.col]
+        local caravan = caravanParkingPlace.caravan
         local removeIndexes = {}
         for basketItemIndex, basketItem in pairs(worker.hand.objects) do
             for _, order in pairs(caravan.orders) do
@@ -58,8 +59,14 @@ function Caravan(initializer)
                 end
             end
         end
-        for i=#removeIndexes, 1, -1 do --reverse order is important
+        for i=#removeIndexes, 1, -1 do --reverse order is important because remove affects table length
             table.remove(worker.hand.objects, removeIndexes[i])
+        end
+        if caravan.isReady(caravanParkingPlace.caravan) then
+            for _, reward in pairs(caravan.rewards) do
+                bag.increaseCount(reward.itemId, reward.count)
+            end
+            caravanParkingPlace.currentState = "empty"-- = Caravan(caravanInitializer)
         end
         return { farm = farm, worker = worker }
     end

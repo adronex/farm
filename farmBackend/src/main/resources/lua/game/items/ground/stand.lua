@@ -1,7 +1,7 @@
 function Stand(initializer)
+    initializer.mandatoryFields = {"toolToHoldId"}
     initializer.type = 'stand'
     local it = Item(initializer)
-    it.toolToHoldId = initializer.toolToHoldId
     it.use = function(farm, worker, target)
         local stand = farm.cells[target.row][target.col]
         local tool = {
