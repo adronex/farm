@@ -2,8 +2,10 @@ local createWorker = function()
     local id = "Uasya"
     local hand = {}
     local position = {
-        row = 13,
-        col = 5
+--        row = 13,
+--        col = 5
+    row = 2,
+    col = 3
     }
 
     return {
@@ -18,8 +20,8 @@ local assignWorker = function(worker, farm, position)
             or position.col < 1 or position.col > farm.width then
         error("Trying to assing worker out of farm bounds, position: " .. json.stringify(position))
     end
-    --todo: static data check/rework
-    if farm[position.row][position.col].type ~= staticData.getItems().road then
+    --todo: types??
+    if farm[position.row][position.col].type ~= "road" then
         error("Target is not the road but " .. farm[position.row][position.col].type)
     end
     worker.position = position

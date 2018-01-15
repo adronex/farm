@@ -59,11 +59,11 @@ public class FarmCell : MonoBehaviour
         {
             return new Color(0.86f, 0.86f, 0.86f);
         }
-        if (farmCell["type"] == "road")
+        if (farmCell["type"] == "roads")
         {
             return new Color(0.54f, 0.54f, 0.54f);
         }
-        if (farmCell["type"] == "field")
+        if (farmCell["type"] == "factories")
         {
             if (farmCell["plant"]["id"] == null)
             {
@@ -75,7 +75,7 @@ public class FarmCell : MonoBehaviour
             }
             return new Color(0.59f, 0.39f, 0.25f); 
         }
-        if (farmCell["type"] == "spawnBox")
+        if (farmCell["type"] == "spawnBoxes")
         {
             return new Color(1f, 0.57f, 0.87f);
         }
@@ -94,11 +94,11 @@ public class FarmCell : MonoBehaviour
     {
         string id = farmCell["id"];
         string type = farmCell["type"];
-        if (type == "road") return GetDefaultCellText(farmCell);
+        if (type == "roads") return GetDefaultCellText(farmCell);
         if (type == "foundations") return GetDefaultCellText(farmCell);
         if (type == "stands") return GetDefaultCellText(farmCell);
-        if (type == "field") return GetFieldCellText(farmCell);
-        if (type == "spawnBox") return GetFieldCellText(farmCell);
+        if (type == "factories") return GetFieldCellText(farmCell);
+        if (type == "spawnBoxes") return GetFieldCellText(farmCell);
         if (type == "caravanParkingPlace") return GetCaravanCellText(farmCell);
         return "";
     }

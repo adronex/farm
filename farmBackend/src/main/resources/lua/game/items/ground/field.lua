@@ -1,5 +1,5 @@
 function Field(initializer)
-    initializer.type = 'field'
+    initializer.type = 'factories'
     local it = Item(initializer)
     it.plant = {}
     it.currentState = "unplowed"
@@ -13,8 +13,8 @@ function Field(initializer)
             return {farm = farm, worker = worker}
         end,
         plowed = function(farm, worker, target)
-            if worker.hand.type ~= 'seed' then
-                error("Field is waiting for seed but got: " .. json.stringify(worker.hand))
+            if worker.hand.type ~= 'seeds' then
+                error("Field is waiting for 'seeds' but got: " .. json.stringify(worker.hand))
             end
             local field = farm.cells[target.row][target.col]
             if field.plant.id then
@@ -29,7 +29,7 @@ function Field(initializer)
         planted = function(farm, worker, target)
             -- DELEGATE TO PLANT
             local field = farm.cells[target.row][target.col]
-            local plant = staticData.getItems()[field.plant.id]
+            local plant = factory.createPickable(pickableObjects[field.plant.type][field.plant.id])
             if not plant then
                 error("Plant object is not present but field is in 'planted' state")
             end

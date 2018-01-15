@@ -1,5 +1,5 @@
 function Road(initializer)
-    initializer.type = "road"
+    initializer.type = "roads"
     local it = Item(initializer)
     it.use = function(farm, worker, target)
         worker.position.row = target.row

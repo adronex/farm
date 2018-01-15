@@ -5,8 +5,9 @@ function Bag(exportData)
     else
         bagItems = {
             {
-                id = inventoryObjects.currencies.items.softMoney,
-                type = inventoryObjects.currencies.type,
+                id = inventoryObjects.currencies.softMoney.id,
+                --todo: types
+                type = "currencies",
                 count = 20
             }
         }

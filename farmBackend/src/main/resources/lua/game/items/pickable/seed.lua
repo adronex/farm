@@ -1,6 +1,7 @@
+-- todo: spawnBox?? spawnObjectToObject??
 function Seed(initializer)
     initializer.mandatoryFields = {"preparationTime", "fruitsCount", "fruitId"}
-    initializer.type = 'seed'
+    initializer.type = 'seeds'
     local it = Item(initializer)
     it.currentState = "readyForCollection"
 
@@ -10,7 +11,7 @@ function Seed(initializer)
             if os.time() * 1000 < field.endTime then
                 error("Plant is not ready yet. It will be ready after " .. (field.endTime - os.time() * 1000) .. " milliseconds")
             end
-            if worker.hand.id ~= pickableObjects.tools.items.basket then
+            if worker.hand.id ~= pickableObjects.tools.basket.id then
                 error("Plant is waiting for basket but got: " .. json.stringify(worker.hand))
             end
             local collected = field.plant
@@ -20,7 +21,8 @@ function Seed(initializer)
                 if not worker.hand.objects then
                     worker.hand.objects = {}
                 end
-                table.insert(worker.hand.objects, staticData.getItems()[collected.fruitId])
+                local fruitInitializer = pickableObjects["fruits"][collected.fruitId]
+                table.insert(worker.hand.objects, factory.createPickable(fruitInitializer))
             end
             field.currentState = "unplowed"
             return { farm = farm, worker = worker }

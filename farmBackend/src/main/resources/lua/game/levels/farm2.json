@@ -149,13 +149,15 @@
         "type": "foundations"
       },
       {
+        "type": "spawnBoxes",
+        "buyPrice": 0,
         "id": "basketStand",
-        "type": "stands",
-        "toolToHoldId": "basket"
+        "spawnObjectId": "basket",
+        "spawnObjectType": "tools"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -185,27 +187,27 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -227,7 +229,7 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -239,49 +241,7 @@
       },
       {
         "id": "road",
-        "type": "road"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      }
-    ],
-    [
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "ground",
-        "type": "foundations"
-      },
-      {
-        "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -323,7 +283,7 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -360,13 +320,57 @@
         "type": "foundations"
       },
       {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "road",
+        "type": "roads"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      }
+    ],
+    [
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "id": "ground",
+        "type": "foundations"
+      },
+      {
+        "type": "spawnBoxes",
+        "buyPrice": 0,
         "id": "wateringCanStand",
-        "type": "stands",
-        "toolToHoldId": "wateringCan"
+        "spawnObjectId": "wateringCan",
+        "spawnObjectType": "tools"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -400,23 +404,23 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -442,34 +446,36 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
+        "type": "spawnBoxes",
+        "buyPrice": 0,
         "id": "shovelStand",
-        "type": "stands",
-        "toolToHoldId": "shovel"
+        "spawnObjectId": "shovel",
+        "spawnObjectType": "tools"
       }
     ],
     [
@@ -491,29 +497,29 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -534,30 +540,31 @@
         "type": "foundations"
       },
       {
-        "type": "spawnBox",
+        "type": "spawnBoxes",
         "buyPrice": 6,
         "id": "cornSpawnBox",
-        "spawnObjectId": "corn"
+        "spawnObjectId": "cornSeed",
+        "spawnObjectType": "seeds"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -578,14 +585,15 @@
         "type": "foundations"
       },
       {
-        "type": "spawnBox",
+        "type": "spawnBoxes",
         "buyPrice": 4,
         "id": "cucumberSpawnBox",
-        "spawnObjectId": "cucumber"
+        "spawnObjectId": "cucumberSeed",
+        "spawnObjectType": "seeds"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",

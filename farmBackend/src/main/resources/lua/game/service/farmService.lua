@@ -1,40 +1,3 @@
-local createFarm = function()
-    local height = 7
-    local width = 5
-    local cells = {}
-
-    for row = 1, height, 1 do
-        cells[row] = {}
-        for col = 1, width, 1 do
-            cells[row][col] = {
-                id = groundObjects.foundations.items.ground,
-                type = groundObjects.foundations.type
-            }
-        end
-    end
-    --todo: static data rework
-    cells[1][3] = staticData.getItems().carrotSpawnBox
-    cells[2][4] = staticData.getItems().caravanParkingPlace
-    cells[2][3] = staticData.getItems().road
-    cells[3][3] = staticData.getItems().road
-    cells[4][3] = staticData.getItems().road
-    cells[5][3] = staticData.getItems().road
-    cells[6][3] = staticData.getItems().road
-    cells[7][3] = staticData.getItems().road
-    cells[2][2] = staticData.getItems().field
-    cells[3][2] = staticData.getItems().field
-    cells[4][2] = staticData.getItems().field
-    cells[5][2] = staticData.getItems().field
-    cells[4][4] = staticData.getItems().shovelStand
-    cells[5][4] = staticData.getItems().basketStand
-
-    return {
-        width = width,
-        height = height,
-        cells = cells
-    }
-end
-
 local exportFarm = function(farmJsonObject)
     local farm = json.parse(farmJsonObject)
     farms[farm.name] = farm
@@ -49,7 +12,7 @@ local loadCurrentFarmData = function(exportData)
     error("Can't export farm - export data is invalid: " .. json.stringify(exportData))
 end
 
-local loadFarmByName = function (name)
+local loadFarmByName = function(name)
     if farms[name] ~= nil then
         farm = farms[name]
     else
@@ -65,13 +28,18 @@ local applyWorkerToCell = function(farm, worker, target)
         error("Invalid target object: " .. json.stringify(target))
     end
     --todo: static data check/rework
-    local invokable = staticData.getItems()[farm.cells[target.row][target.col].id]
+    local cell = farm.cells[target.row][target.col]
+    local initializers = groundObjects[cell.type]
+    if not initializers then
+        error("There is no initializers of type " .. cell.type)
+    end
+    local invokableInitializer = initializers[cell.id]
+    local invokable = factory.createGround(invokableInitializer)
     local response = invokable.use(farm, worker, target)
     return { farm = response.farm, worker = response.worker }
 end
 
 farmService = {
-    createFarm = createFarm,
     exportFarm = exportFarm,
     loadCurrentFarmData = loadCurrentFarmData,
     loadFarmByName = loadFarmByName,

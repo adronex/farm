@@ -13,11 +13,11 @@
         "type": "foundations"
       },
       {
-        "type": "spawnBox",
+        "type": "spawnBoxes",
         "buyPrice": 3,
-        "id": "carrotSpawnBox",
-        "spawnObjectId": "carrot",
-        "use": null
+        "id": "wheatSpawnBox",
+        "spawnObjectId": "wheatSeed",
+        "spawnObjectType": "seeds"
       },
       {
         "id": "ground",
@@ -34,23 +34,21 @@
         "type": "foundations"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "caravanParkingPlace",
-        "type": "caravanParkingPlace",
-        "use": null,
+        "type": "factories",
         "caravan": {
           "type": "caravan",
           "id": "caravan",
-          "isReady": null,
           "rewards": [
             {
               "count": 10,
@@ -60,11 +58,10 @@
           "orders": [
             {
               "requiredCount": 8,
-              "itemId": "carrot",
+              "itemId": "wheat",
               "currentCount": 0
             }
-          ],
-          "use": null
+          ]
         }
       },
       {
@@ -78,14 +75,14 @@
         "type": "foundations"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -102,19 +99,20 @@
         "type": "foundations"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "shovelStand",
-        "type": "stands",
-        "toolToHoldId": "shovel"
+        "type": "spawnBoxes",
+        "spawnObjectId": "shovel",
+        "spawnObjectType": "tools"
       },
       {
         "id": "ground",
@@ -127,20 +125,20 @@
         "type": "foundations"
       },
       {
-        "type": "field",
+        "type": "factories",
         "plant": {},
         "currentState": "unplowed",
         "id": "field"
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "basketStand",
-        "type": "stands",
-        "toolToHoldId": "basket",
-        "use": null
+        "type": "spawnBoxes",
+        "spawnObjectId": "basket",
+        "spawnObjectType": "tools"
       },
       {
         "id": "ground",
@@ -158,7 +156,7 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
@@ -180,7 +178,7 @@
       },
       {
         "id": "road",
-        "type": "road"
+        "type": "roads"
       },
       {
         "id": "ground",
