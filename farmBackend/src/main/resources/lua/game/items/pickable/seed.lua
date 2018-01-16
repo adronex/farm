@@ -40,5 +40,3 @@ function Seed(initializer)
     end
     return it
 end
-
-local bu = 1

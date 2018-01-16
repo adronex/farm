@@ -29,9 +29,9 @@ public class FarmCell : MonoBehaviour
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(delegate { OnTargetChosen(_cellState); });
-        if (_cellState["endTime"] != null)
+        if (_cellState["readyTime"] != null)
         {
-            var cd = _cellState["endTime"].AsDouble - Utils.Now();
+            var cd = _cellState["readyTime"].AsDouble - Utils.Now();
             cd = cd > 0 ? cd : 0;
             CurrentTimer = (float)cd / 1000;
         }
@@ -42,13 +42,13 @@ public class FarmCell : MonoBehaviour
     {
         while (CurrentTimer > 0)
         {
-            CurrentTimer = (float)(_cellState["endTime"].AsDouble - Utils.Now()) / 1000;
+            CurrentTimer = (float)(_cellState["readyTime"].AsDouble - Utils.Now()) / 1000;
             GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
             GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
             yield return null;
         }
         CurrentTimer = 0;
-        _cellState["currentProductionTimeLeft"] = 0;
+        _cellState["readyTime"] = null;
         GetComponentInChildren<Text>().text = GetFarmCellText(_cellState);
         GetComponentInChildren<Image>().color = GetFarmCellColor(_cellState);
     }
@@ -110,7 +110,7 @@ public class FarmCell : MonoBehaviour
     
     private string GetFieldCellText(JSONNode farmCell)
     {
-        if (farmCell["plant"]["id"] == null)
+        if (_cellState["readyTime"] == null)
         {
             return "id: " + farmCell["id"] + "\nstate: " + farmCell["currentState"];
         }       
