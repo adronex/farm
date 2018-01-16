@@ -38,21 +38,21 @@ pickableObjects = {
         wheatSeed = {
             id = "wheatSeed",
             type = "seeds",
-            preparationTime = 10000,
+            readyTime = 10000,
             fruitsCount = 5,
             fruitId = "wheat"
         },
         cucumberSeed = {
             id = "cucumberSeed",
             type = "seeds",
-            preparationTime = 14000,
+            readyTime = 14000,
             fruitsCount = 4,
             fruitId = "wheat"
         },
         cornSeed = {
             id = "cornSeed",
             type = "seeds",
-            preparationTime = 16000,
+            readyTime = 16000,
             fruitsCount = 4,
             fruitId = "wheat"
         }
@@ -90,7 +90,11 @@ groundObjects = {
     factories = {
         field = {
             id = "field",
-            type = "factories"
+            type = "factories",
+            states = {
+                "unplowed", "plowed", "planted"
+            },
+            currentState = 1
         },
         well = {
             id = "well",

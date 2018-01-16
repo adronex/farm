@@ -77,9 +77,9 @@ function StaticData()
 ----            return { farm = farm, worker = worker }
 ----        end
 --    })
-    items.field = Field({
-        id = "field"
-    })
+--    items.field = Field({
+--        id = "field"
+--    })
 --    items.carrotSpawnBox = SpawnBox({
 --        id = "carrotSpawnBox",
 --        spawnObjectId = pickableObjects.seeds.items.carrot,

@@ -36,8 +36,11 @@
       {
         "type": "factories",
         "plant": {},
-        "currentState": "unplowed",
-        "id": "field"
+        "id": "field",
+        "states": [
+          "unplowed", "plowed", "planted"
+        ],
+        "currentState": 1
       },
       {
         "id": "road",
@@ -77,8 +80,11 @@
       {
         "type": "factories",
         "plant": {},
-        "currentState": "unplowed",
-        "id": "field"
+        "id": "field",
+        "states": [
+          "unplowed", "plowed", "planted"
+        ],
+        "currentState": 1
       },
       {
         "id": "road",
@@ -101,8 +107,11 @@
       {
         "type": "factories",
         "plant": {},
-        "currentState": "unplowed",
-        "id": "field"
+        "id": "field",
+        "states": [
+          "unplowed", "plowed", "planted"
+        ],
+        "currentState": 1
       },
       {
         "id": "road",
@@ -127,8 +136,11 @@
       {
         "type": "factories",
         "plant": {},
-        "currentState": "unplowed",
-        "id": "field"
+        "id": "field",
+        "states": [
+          "unplowed", "plowed", "planted"
+        ],
+        "currentState": 1
       },
       {
         "id": "road",

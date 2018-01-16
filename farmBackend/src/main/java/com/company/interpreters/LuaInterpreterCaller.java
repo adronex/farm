@@ -40,7 +40,7 @@ public class LuaInterpreterCaller implements InterpreterCaller {
 
 		loadFarm(globals, "lua/game/levels/farm1.json");
 		loadFarm(globals, "lua/game/levels/farm2.json");
-		globals.get("farmService").get("loadFarmByName").call("farm2");
+		globals.get("farmService").get("loadFarmByName").call("farm1");
 		setStateFunction = globals.get("setState");
 		executeCommandFunction = globals.get("commandHandler");
 	}

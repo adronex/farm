@@ -1,28 +1,41 @@
 function Field(initializer)
+    initializer.mandatoryFields = {"states", "currentState"}
     initializer.type = 'factories'
     local it = Item(initializer)
     it.plant = {}
-    it.currentState = "unplowed"
+    it.getNextState = function(field)
+        field.currentState = (field.currentState % #field.states) + 1
+        return field
+    end
+    if initializer.readyTime then
+        it.readyTime = initializer.readyTime
+    end
+    if initializer.plant then
+        it.plant = initializer.plant
+    end
     local actionsByState = {
         unplowed = function(farm, worker, target)
             if worker.hand.id ~= 'shovel' then
                 error("Field is waiting for shovel but got: " .. json.stringify(worker.hand))
             end
-            local field = farm.cells[target.row][target.col]
-            field.currentState = "plowed"
+            local fieldInitializer = farm.cells[target.row][target.col]
+            local field = factory.createGround(fieldInitializer)
+            field.readyTime = os.time() * 1000 + 1000
+            farm.cells[target.row][target.col] = field.getNextState(field)
             return {farm = farm, worker = worker}
         end,
         plowed = function(farm, worker, target)
             if worker.hand.type ~= 'seeds' then
                 error("Field is waiting for 'seeds' but got: " .. json.stringify(worker.hand))
             end
-            local field = farm.cells[target.row][target.col]
+            local fieldInitializer = farm.cells[target.row][target.col]
+            local field = factory.createGround(fieldInitializer)
             if field.plant.id then
                 error("Already sowed with " .. json.stringify(field.plant))
             end
             field.plant = worker.hand
-            field.endTime = os.time() * 1000 + field.plant.preparationTime
-            field.currentState = "planted"
+            field.readyTime = os.time() * 1000 + field.plant.readyTime
+            farm.cells[target.row][target.col] = field.getNextState(field)
             worker.hand = {}
             return { farm = farm, worker = worker }
         end,
@@ -38,10 +51,11 @@ function Field(initializer)
     }
     it.use = function(farm, worker, target)
         local field = farm.cells[target.row][target.col]
-        if (type(actionsByState[field.currentState]) ~= "function") then
-            error ("Field hasn't action for state: " .. json.stringify(field.currentState))
+        local state = field.states[field.currentState]
+        if (type(actionsByState[state]) ~= "function") then
+            error ("Field hasn't action for state: " .. json.stringify(state))
         end
-        return actionsByState[field.currentState](farm, worker, target)
+        return actionsByState[state](farm, worker, target)
     end
     return it
 end
